@@ -1,17 +1,18 @@
 """Generate new frames after performing set non malicious modifications on original frames."""
 import functools
 import itertools
+import operator
 import pathlib
-from typing import Generator, List, NamedTuple, Optional
+from typing import Generator, List, NamedTuple, Optional, Sequence
 
 import cv2 as cv
 import numpy as np
 
-from dfd.exceptions import DfdError
 from dfd.datasets.modifications.definitions import IdentityModification
-from dfd.datasets.modifications.specification import ModificationSpecification
 from dfd.datasets.modifications.register import ModificationRegister
-from dfd.datasets.settings import GeneratorSettings
+from dfd.datasets.modifications.specification import ModificationSpecification
+from dfd.datasets.settings import GeneratorSettings, ModificationSettings
+from dfd.exceptions import DfdError
 
 
 class ModificationShare(NamedTuple):
@@ -101,14 +102,9 @@ class ModificationGenerator:
     @functools.lru_cache(maxsize=1)
     def _get_modifications_share(self) -> List[ModificationShare]:
         modifications_share: List[ModificationShare] = []
-        for modification_settings in self._setting.modifications:
-            mame = modification_settings.name
-            options = modification_settings.options
-            share = modification_settings.share
-
-            modification_class = self._register.get_modification_class(mame)
-            # TODO: fix typing
-            modification = modification_class(**options)  # type: ignore
+        for modification_chain_settings in self._setting.modifications_chains:
+            share = modification_chain_settings.share
+            modification = self._chain_modifications(modification_chain_settings.modifications)
             modifications_share.append(ModificationShare(modification, share))
 
         self._check_modifications_are_unique(
@@ -170,3 +166,14 @@ class ModificationGenerator:
         # TODO: log error
         # This should never happen
         raise DfdError("Could not select modification.")
+
+    def _chain_modifications(
+        self, modifications_settings: Sequence[ModificationSettings]
+    ) -> ModificationSpecification:
+        modifications: List[ModificationSpecification] = []
+        for modification_settings in modifications_settings:
+            modification_class = self._register.get_modification_class(modification_settings.name)
+            # TODO: fix typing
+            modification = modification_class(**modification_settings.options)  # type: ignore
+            modifications.append(modification)
+        return functools.reduce(operator.and_, modifications)

@@ -14,20 +14,32 @@ class ModificationSettings(pydantic.BaseModel):
 
     Args:
         modification_name: name, used to retrieve modification from ModificationRegistry
-        share: share of frames on which modification should be applied
-        options: modification options, i.e. parameters provided to modification __init__
+        options: modification options, i.e. parameters provided to modification `__init__`
 
     """
 
     name: str
-    share: float
     options: dict = {}
+
+
+class ModificationsChainSettings(pydantic.BaseModel):
+    """Settings for single chain of modification applied in order.
+
+    Args:
+        share: Share of frames on which modifications chain will be applied.
+        modifications: List of modifications that will be applied on sectioned frames.
+            Modification on top will be applied first, modification on bootom last.
+
+    """
+
+    share: float
+    modifications: List[ModificationSettings] = []
 
 
 class GeneratorSettings(pydantic.BaseModel):
     """Generator settings."""
 
-    modifications: List[ModificationSettings]
+    modifications_chains: List[ModificationsChainSettings]
 
     @classmethod
     def from_yaml(cls, yaml_filepath: pathlib.Path) -> "GeneratorSettings":
@@ -52,38 +64,60 @@ class GeneratorSettings(pydantic.BaseModel):
 
         """
         return cls(
-            modifications=[
-                ModificationSettings(
-                    name="RedEyesEffectModification",
+            modifications_chains=[
+                ModificationsChainSettings(
                     share="0.125",
-                    options={
-                        "brightness_threshold": 50,
-                        "face_landmarks_detector_path": str(assets.FACE_LANDMARKS_MODEL_PATH),
-                    },
+                    modifications=[
+                        ModificationSettings(
+                            name="RedEyesEffectModification",
+                            options={
+                                "brightness_threshold": 50,
+                                "face_landmarks_detector_path": str(
+                                    assets.FACE_LANDMARKS_MODEL_PATH
+                                ),
+                            },
+                        ),
+                    ],
                 ),
-                ModificationSettings(
-                    name="CLAHEModification",
+                ModificationsChainSettings(
                     share="0.125",
-                    options={
-                        "clip_limit": 2.0,
-                        "grid_width": 8,
-                        "grid_height": 8,
-                    },
+                    modifications=[
+                        ModificationSettings(
+                            name="CLAHEModification",
+                            options={
+                                "clip_limit": 2.0,
+                                "grid_width": 8,
+                                "grid_height": 8,
+                            },
+                        ),
+                    ],
                 ),
-                ModificationSettings(
-                    name="HistogramEqualizationModification",
+                ModificationsChainSettings(
                     share="0.125",
-                    options={},
+                    modifications=[
+                        ModificationSettings(
+                            name="HistogramEqualizationModification",
+                            options={},
+                        ),
+                    ],
                 ),
-                ModificationSettings(
-                    name="GammaCorrectionModification",
+                ModificationsChainSettings(
                     share="0.0625",
-                    options={"gamma_value": 0.75},
+                    modifications=[
+                        ModificationSettings(
+                            name="GammaCorrectionModification",
+                            options={"gamma_value": 0.75},
+                        ),
+                    ],
                 ),
-                ModificationSettings(
-                    name="GammaCorrectionModification",
+                ModificationsChainSettings(
                     share="0.0625",
-                    options={"gamma_value": 1.25},
+                    modifications=[
+                        ModificationSettings(
+                            name="GammaCorrectionModification",
+                            options={"gamma_value": 1.25},
+                        ),
+                    ],
                 ),
             ]
         )
