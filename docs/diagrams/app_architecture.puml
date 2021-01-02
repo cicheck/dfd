@@ -24,7 +24,7 @@ package "Business Logic (Core)" #skyblue {
         }
 
         package Modifications {
-            interface ModificationInterface {
+            abstract ModificationSpecification {
                 + name
                 --
                 + perform()
@@ -100,8 +100,8 @@ MesoNet -up-- ModelRegistry : register >
 
 MesoNet -up--|> ModelInterface
 
-GammaCorrectionModification -up--|> ModificationInterface
-CLAHEModification -up--|> ModificationInterface
+GammaCorrectionModification -up--|> ModificationSpecification
+CLAHEModification -up--|> ModificationSpecification
 
 GammaCorrectionModification -up-- ModificationRegistry : register >
 CLAHEModification -up-- ModificationRegistry : register >
