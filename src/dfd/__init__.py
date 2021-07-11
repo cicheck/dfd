@@ -2,7 +2,9 @@
 
 
 def add_one(number: int) -> int:
-    """Dummy function to test project setup.
+    """Return number increased by one.
+
+    Dummy function to test project setup.
 
     Args:
         number: base
