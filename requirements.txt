@@ -4,3 +4,5 @@
 #
 #    pip-compile setup.cfg
 #
+numpy==1.21.1
+    # via dfd (setup.cfg)
