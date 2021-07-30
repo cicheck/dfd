@@ -6,3 +6,9 @@
 #
 numpy==1.21.1
     # via dfd (setup.cfg)
+click==8.0.1
+    # via dfd (setup.cfg)
+colorama==0.4.4
+    # via click
+numpy==1.21.1
+    # via dfd (setup.cfg)
