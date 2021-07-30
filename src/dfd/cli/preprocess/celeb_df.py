@@ -2,6 +2,7 @@
 from pathlib import Path
 
 import click
+
 from dfd.datasets import CelebDFPreprocessor
 
 

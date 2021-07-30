@@ -9,4 +9,5 @@ from dfd.cli.preprocess.celeb_df import celebdf
 def preprocess():
     """Preprocess chosen dataset into format that can be directly fed into input pipelines."""
 
+
 preprocess.add_command(celebdf)

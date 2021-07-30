@@ -17,4 +17,3 @@ entry_point.add_command(preprocess)
 entry_point.add_command(train)
 entry_point.add_command(test)
 entry_point.add_command(predict)
-
