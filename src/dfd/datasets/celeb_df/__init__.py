@@ -1,4 +1,4 @@
-"""Create tf.data.Dataset from Celeb-DF dataset
+"""Create tf.data.Dataset from Celeb-DF dataset.
 
 Ref:
     paper: "Celeb-DF: A Large-scale Challenging Dataset for DeepFake Forensics"

@@ -1,7 +1,6 @@
 """Preprocess saved on drive raw Celeb-DF dataset (videos -> frames)."""
-import re
 from pathlib import Path
-from typing import Final, Optional
+from typing import Optional
 
 import cv2
 import numpy as np
@@ -45,7 +44,7 @@ class CelebDFPreprocessor:
         self._output_path_fakes.mkdir(exist_ok=True)
 
     def preprocess_all(self):
-        """Preprocess all videos - use at your own risk!
+        """Preprocess all videos - use at your own risk.
 
         Preprocess all available real & fake videos.
         If available memory is not sufficient it will crash.

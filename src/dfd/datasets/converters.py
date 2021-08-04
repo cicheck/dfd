@@ -14,7 +14,6 @@ def convert_video_to_frames(filepath: str) -> list[np.ndarray]:
         list of frames
 
     """
-
     frames: list[np.ndarray] = []
     capture = cv2.VideoCapture(filepath)
 
