@@ -1,6 +1,7 @@
 """Preprocess saved on drive raw Celeb-DF dataset (videos -> frames)."""
+import re
 from pathlib import Path
-from typing import Optional
+from typing import Final, Optional
 
 import cv2
 import numpy as np
@@ -112,14 +113,13 @@ class CelebDFPreprocessor:
             upper_bound: upper batch boundary.
 
         """
-        all_input_videos = sorted(input_path.iterdir())
-        # Determine starting frame index based on number of already preprocessed frames
-        frame_index = len(list(output_path.iterdir()))
-        processed_input_videos = all_input_videos[lower_bound:upper_bound]
-        for video in processed_input_videos:
+        all_videos = sorted(input_path.iterdir())
+        all_videos_enumerated = list(enumerate(all_videos))
+        processed_videos_enumerated = all_videos_enumerated[lower_bound:upper_bound]
+        for video_index, video in processed_videos_enumerated:
             video_frames = convert_video_to_frames(filepath=str(video))
-            for frame in video_frames:
-                frame_path = output_path.joinpath("{0}.jpg".format(frame_index))
+            for frame_index, frame in enumerate(video_frames):
+                frame_path = output_path.joinpath("{0}_{1}.jpg".format(video_index, frame_index))
                 self._save_video_frame(frame, str(frame_path))
                 frame_index += 1
 
