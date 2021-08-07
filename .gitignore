@@ -1,3 +1,6 @@
+# Tensorboard logs
+notebooks/logs
+
 # IDE
 .idea
 .vscode
