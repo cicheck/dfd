@@ -113,15 +113,13 @@ class CelebDFPreprocessor:
 
         """
         all_input_videos = sorted(input_path.iterdir())
-        # Determine starting frame index based on number of already preprocessed frames
-        frame_index = len(list(output_path.iterdir()))
         processed_input_videos = all_input_videos[lower_bound:upper_bound]
         for video in processed_input_videos:
             video_frames = convert_video_to_frames(filepath=str(video))
-            for frame in video_frames:
-                frame_path = output_path.joinpath("{0}.jpg".format(frame_index))
+            video_prefix = video.name.split(".")[0]
+            for frame_index, frame in enumerate(video_frames):
+                frame_path = output_path.joinpath("{0}_{1}.jpg".format(video_prefix, frame_index))
                 self._save_video_frame(frame, str(frame_path))
-                frame_index += 1
 
     @staticmethod
     def _save_video_frame(frame: np.ndarray, filepath: str) -> None:
