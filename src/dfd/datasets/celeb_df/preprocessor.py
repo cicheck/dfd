@@ -118,7 +118,7 @@ class CelebDFPreprocessor:
             video_frames = convert_video_to_frames(filepath=str(video))
             video_prefix = video.name.split(".")[0]
             for frame_index, frame in enumerate(video_frames):
-                frame_path = output_path.joinpath("{0}_{1}.jpg".format(video_prefix, frame_index))
+                frame_path = output_path.joinpath("{0}_{1}.png".format(video_prefix, frame_index))
                 self._save_video_frame(frame, str(frame_path))
 
     @staticmethod
