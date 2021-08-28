@@ -1,3 +1,6 @@
+# pyenv file
+.python-version
+
 # Tensorboard logs
 notebooks/logs
 
