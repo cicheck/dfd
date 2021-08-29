@@ -3,7 +3,7 @@ from pathlib import Path
 
 import click
 
-from dfd.datasets import CelebDFPreprocessor
+from dfd.datasets import CelebDFExtractor
 
 
 @click.group()
@@ -34,8 +34,8 @@ def reals(input_path: Path, output_path: Path, lower_bound: int, upper_bound: in
 
     # If output path does not exists create it
     output_path.mkdir(exist_ok=True, parents=True)
-    preprocessor = CelebDFPreprocessor(input_path=input_path, output_path=output_path)
-    preprocessor.preprocess_reals_batch(lower_bound=lower_bound, upper_bound=upper_bound)
+    preprocessor = CelebDFExtractor(input_path=input_path, output_path=output_path)
+    preprocessor.extract_reals_batch(lower_bound=lower_bound, upper_bound=upper_bound)
 
     click.echo("Done!")
 
@@ -53,8 +53,8 @@ def fakes(input_path: Path, output_path: Path, lower_bound: int, upper_bound: in
 
     # If output path does not exists create it
     output_path.mkdir(exist_ok=True, parents=True)
-    preprocessor = CelebDFPreprocessor(input_path=input_path, output_path=output_path)
-    preprocessor.preprocess_fakes_batch(lower_bound=lower_bound, upper_bound=upper_bound)
+    preprocessor = CelebDFExtractor(input_path=input_path, output_path=output_path)
+    preprocessor.extract_fakes_batch(lower_bound=lower_bound, upper_bound=upper_bound)
 
     click.echo("Done!")
 

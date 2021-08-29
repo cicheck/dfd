@@ -1,4 +1,4 @@
-"""Preprocess saved on drive raw Celeb-DF dataset (videos -> frames)."""
+"""Extract from saved on drive raw Celeb-DF dataset frames (videos -> frames)."""
 from pathlib import Path
 from typing import Optional
 
@@ -8,8 +8,8 @@ import numpy as np
 from dfd.datasets.converters import convert_video_to_frames
 
 
-class CelebDFPreprocessor:
-    """Preprocess raw celeb-DF.
+class CelebDFExtractor:
+    """Extract frames from raw celeb-DF.
 
     Raw dataset of videos is used to generate directory containing
     frames extracted from original videos divided into subdirectories corresponding
@@ -27,7 +27,7 @@ class CelebDFPreprocessor:
     """
 
     def __init__(self, input_path: Path, output_path: Path):
-        """Initialize CelebDFPreprocessor.
+        """Initialize CelebDFExtractor.
 
         Args:
             input_path: path to raw Celeb-DF dataset.
@@ -43,62 +43,62 @@ class CelebDFPreprocessor:
         self._output_path_reals.mkdir(exist_ok=True)
         self._output_path_fakes.mkdir(exist_ok=True)
 
-    def preprocess_all(self):
+    def extract_all(self):
         """Preprocess all videos - use at your own risk!
 
         Preprocess all available real & fake videos.
         If available memory is not sufficient it will crash.
 
         """
-        self.preprocess_reals_batch()
-        self.preprocess_fakes_batch()
+        self.extract_reals_batch()
+        self.extract_fakes_batch()
 
-    def preprocess_reals_batch(
+    def extract_reals_batch(
         self,
         lower_bound: Optional[int] = None,
         upper_bound: Optional[int] = None,
     ) -> None:
-        """Preprocess batch of real videos.
+        """Extract frames from batch of real videos.
 
         Args:
             lower_bound: lower batch boundary.
             upper_bound: upper batch boundary.
 
         """
-        self._preprocess_videos_batch(
+        self._extract_batch(
             input_path=self._input_path_reals,
             output_path=self._output_path_reals,
             lower_bound=lower_bound,
             upper_bound=upper_bound,
         )
 
-    def preprocess_fakes_batch(
+    def extract_fakes_batch(
         self,
         lower_bound: Optional[int] = None,
         upper_bound: Optional[int] = None,
     ) -> None:
-        """Preprocess batch of fake videos.
+        """Extract frames from batch of fake videos.
 
         Args:
             lower_bound: lower batch boundary.
             upper_bound: upper batch boundary.
 
         """
-        self._preprocess_videos_batch(
+        self._extract_batch(
             input_path=self._input_path_fakes,
             output_path=self._output_path_fakes,
             lower_bound=lower_bound,
             upper_bound=upper_bound,
         )
 
-    def _preprocess_videos_batch(
+    def _extract_batch(
         self,
         input_path: Path,
         output_path: Path,
         lower_bound: Optional[int],
         upper_bound: Optional[int],
     ) -> None:
-        """Preprocess batch of videos.
+        """Extract frames from batch of videos.
 
         Split videos into frames and save them into output directory.
         If boundaries are not specified preprocess all videos from input directory.
