@@ -4,7 +4,7 @@ from typing import Tuple
 import cv2 as cv
 import numpy as np
 
-from dfd.modifications.interfaces import ModificationInterface
+from dfd.datasets.modifications.interfaces import ModificationInterface
 
 
 class CLAHEModification(ModificationInterface):
