@@ -1,4 +1,4 @@
-"""Converters used in datasets package."""
+"""Converters used in frame extractors package."""
 
 import cv2
 import numpy as np
