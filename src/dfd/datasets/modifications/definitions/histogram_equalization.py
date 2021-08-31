@@ -3,7 +3,7 @@
 import cv2 as cv
 import numpy as np
 
-from .interfaces import ModificationInterface
+from dfd.datasets.modifications.interfaces import ModificationInterface
 
 
 class HistogramEqualizationModification(ModificationInterface):
