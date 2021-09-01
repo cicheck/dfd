@@ -20,7 +20,7 @@ class ModificationSettings(pydantic.BaseModel):
 
     modification_name: str
     share: float
-    options: Dict[str, OptionValue]
+    options: Dict[str, OptionValue] = {}
 
 
 class GeneratorSettings(pydantic.BaseModel):

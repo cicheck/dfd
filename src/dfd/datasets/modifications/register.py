@@ -34,7 +34,7 @@ class ModificationRegister:
             },
         )
 
-    def get_modification(self, modification_name: str) -> Type[ModificationInterface]:
+    def get_modification_class(self, modification_name: str) -> Type[ModificationInterface]:
         """Get registered modification via name.
 
         Returns:
