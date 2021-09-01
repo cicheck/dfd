@@ -1,5 +1,5 @@
 """Project exceptions."""
 
 
-class DfdException(Exception):
-    """DeepFake Detector exception."""
+class DfdError(Exception):
+    """Base class for DeepFake Detector exception."""
