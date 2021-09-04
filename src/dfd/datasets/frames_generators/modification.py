@@ -6,11 +6,11 @@ from typing import Generator, List, NamedTuple, Optional
 import cv2 as cv
 import numpy as np
 
-from ..exceptions import DfdError
-from .modifications.definitions import IdentityModification
-from .modifications.interfaces import ModificationInterface
-from .modifications.register import ModificationRegister
-from .settings import GeneratorSettings
+from dfd.exceptions import DfdError
+from dfd.datasets.modifications.definitions import IdentityModification
+from dfd.datasets.modifications.interfaces import ModificationInterface
+from dfd.datasets.modifications.register import ModificationRegister
+from dfd.datasets.settings import GeneratorSettings
 
 
 class ModificationShare(NamedTuple):
@@ -42,7 +42,7 @@ class ModifiedFrame(NamedTuple):
     frame: np.ndarray
 
 
-class FramesGenerator:
+class ModificationGenerator:
     """Generate new frames after performing set non malicious modifications on original frames."""
 
     def __init__(
@@ -60,11 +60,14 @@ class FramesGenerator:
         self._setting = settings
         self._register = register or ModificationRegister.default()
 
-    def generate(
+    # TODO: make it more generic, each generator should only have method generate that takes as
+    # input iterable and outputs generated frames. It should be some other objects that handles
+    # file logic
+    def from_directory(
         self,
         input_path: pathlib.Path,
     ) -> Generator[ModifiedFrame, None, None]:
-        """Generate frames.
+        """Generate modified frames from directory.
 
         Args:
              input_path: Path to original frames.
