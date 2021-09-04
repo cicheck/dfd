@@ -2,10 +2,11 @@
 
 import click
 
-from dfd.cli.predict import predict
-from dfd.cli.extract import extract
-from dfd.cli.test import test
-from dfd.cli.train import train
+from .extract import extract
+from .generate import generate
+from .predict import predict
+from .test import test
+from .train import train
 
 
 @click.group()
@@ -14,6 +15,7 @@ def entry_point():
 
 
 entry_point.add_command(extract)
+entry_point.add_command(generate)
 entry_point.add_command(train)
 entry_point.add_command(test)
 entry_point.add_command(predict)
