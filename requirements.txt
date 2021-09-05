@@ -18,8 +18,6 @@ charset-normalizer==2.0.4
     # via requests
 click==8.0.1
     # via dfd (setup.cfg)
-colorama==0.4.4
-    # via click
 flatbuffers==1.12
     # via tensorflow
 gast==0.4.0
@@ -50,11 +48,14 @@ numpy==1.19.5
     # via
     #   h5py
     #   keras-preprocessing
+    #   opencv-contrib-python
     #   opt-einsum
     #   tensorboard
     #   tensorflow
 oauthlib==3.1.1
     # via requests-oauthlib
+opencv-contrib-python==4.5.3.56
+    # via dfd (setup.cfg)
 opt-einsum==3.3.0
     # via tensorflow
 protobuf==3.17.3
@@ -67,6 +68,10 @@ pyasn1==0.4.8
     #   rsa
 pyasn1-modules==0.2.8
     # via google-auth
+pydantic==1.8.2
+    # via dfd (setup.cfg)
+pyyaml==5.4.1
+    # via dfd (setup.cfg)
 requests==2.26.0
     # via
     #   requests-oauthlib
@@ -97,8 +102,12 @@ tensorflow-estimator==2.5.0
     # via tensorflow
 termcolor==1.1.0
     # via tensorflow
+tqdm==4.62.2
+    # via dfd (setup.cfg)
 typing-extensions==3.7.4.3
-    # via tensorflow
+    # via
+    #   pydantic
+    #   tensorflow
 urllib3==1.26.6
     # via requests
 werkzeug==2.0.1
