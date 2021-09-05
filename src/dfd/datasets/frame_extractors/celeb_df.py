@@ -101,7 +101,7 @@ class CelebDFExtractor:
         """Extract frames from batch of videos.
 
         Split videos into frames and save them into output directory.
-        If boundaries are not specified extract all videos from input directory.
+        If boundaries are not specified frames_extractor all videos from input directory.
         Frames are saved in files named by number in which they were produced.
         Starting number is determined by number of files already existing in directory.
 

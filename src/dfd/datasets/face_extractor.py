@@ -61,7 +61,6 @@ class FaceExtractor:
             Single extracted face, if no face was found original image is returned.
 
         """
-
         frame_in_rgb = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
         face_location_tuples = face_recognition.face_locations(
             frame_in_rgb,
