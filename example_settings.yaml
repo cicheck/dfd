@@ -1,0 +1,10 @@
+# Example ModificationGenerator settings file
+modifications:
+  - name: GammaCorrectionModification
+    share: 0.20
+    options:
+      gamma_value: 1.5
+  - name: GammaCorrectionModification
+    share: 0.15
+    options:
+      gamma_value: 0.5

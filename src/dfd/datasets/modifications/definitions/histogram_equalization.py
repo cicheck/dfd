@@ -38,3 +38,6 @@ class HistogramEqualizationModification(ModificationInterface):
         ycrcb_image[:, :, 0] = cv.equalizeHist(ycrcb_image[:, :, 0])
         # Convert back to BGR
         return cv.cvtColor(ycrcb_image, cv.COLOR_YCrCb2BGR)
+
+    def __str__(self) -> str:
+        return "histogram_equalization"

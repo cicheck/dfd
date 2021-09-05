@@ -1,11 +1,9 @@
 """Generator settings."""
 import pathlib
-from typing import Dict, List, Union
+from typing import List
 
 import pydantic
 import yaml
-
-OptionValue = Union[str, int, float]
 
 
 class ModificationSettings(pydantic.BaseModel):
@@ -18,9 +16,9 @@ class ModificationSettings(pydantic.BaseModel):
 
     """
 
-    modification_name: str
+    name: str
     share: float
-    options: Dict[str, OptionValue] = {}
+    options: dict
 
 
 class GeneratorSettings(pydantic.BaseModel):
@@ -30,5 +28,14 @@ class GeneratorSettings(pydantic.BaseModel):
 
     @classmethod
     def from_yaml(cls, yaml_filepath: pathlib.Path) -> "GeneratorSettings":
+        """Generate settings from yaml file.
+
+        Args:
+            yaml_filepath: Path to file with settings in YAML format.
+
+        Returns:
+            Loaded settings.
+
+        """
         with yaml_filepath.open() as yaml_file:
             return cls(**yaml.safe_load(yaml_file))

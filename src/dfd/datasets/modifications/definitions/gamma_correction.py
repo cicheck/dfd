@@ -46,3 +46,6 @@ class GammaCorrectionModification(ModificationInterface):
         ).astype("uint8")
         # apply gamma correction using lookup table
         return cv.LUT(image, look_up_table)
+
+    def __str__(self) -> str:
+        return f"gamma_correction_{self._gamma_value}"

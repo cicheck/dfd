@@ -52,3 +52,7 @@ class CLAHEModification(ModificationInterface):
         ycrcb_image[:, :, 0] = clahe.apply(ycrcb_image[:, :, 0])
         # Convert back to BGR
         return cv.cvtColor(ycrcb_image, cv.COLOR_YCrCb2BGR)
+
+    def __str__(self) -> str:
+        width, height = self._title_grid_size
+        return f"clahe_{width}_{height}_{self._clip_limit}"

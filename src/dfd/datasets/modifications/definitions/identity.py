@@ -25,3 +25,6 @@ class IdentityModification(ModificationInterface):
 
         """
         return image
+
+    def __str__(self) -> str:
+        return "identity"

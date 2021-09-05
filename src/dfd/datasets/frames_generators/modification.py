@@ -1,5 +1,6 @@
 """Generate new frames after performing set non malicious modifications on original frames."""
 import functools
+import itertools
 import pathlib
 from typing import Generator, List, NamedTuple, Optional
 
@@ -40,6 +41,7 @@ class ModifiedFrame(NamedTuple):
 
     modification_used: str
     frame: np.ndarray
+    original_path: pathlib.Path
 
 
 class ModificationGenerator:
@@ -88,15 +90,19 @@ class ModificationGenerator:
                 input_frame_path=input_frame_path,
                 no_frames=no_frames,
             )
-            input_frame = cv.imread(input_frame_path)
+            input_frame = cv.imread(str(input_frame_path))
             modified_frame = modification.perform(input_frame)
-            yield ModifiedFrame(modification_used=str(modification), frame=modified_frame)
+            yield ModifiedFrame(
+                modification_used=str(modification),
+                frame=modified_frame,
+                original_path=input_frame_path,
+            )
 
     @functools.lru_cache(maxsize=1)
     def _get_modifications_share(self) -> List[ModificationShare]:
         modifications_share: List[ModificationShare] = []
         for modification_settings in self._setting.modifications:
-            mame = modification_settings.modification_name
+            mame = modification_settings.name
             options = modification_settings.options
             share = modification_settings.share
 
@@ -104,7 +110,24 @@ class ModificationGenerator:
             # TODO: fix typing
             modification = modification_class(**options)  # type: ignore
             modifications_share.append(ModificationShare(modification, share))
+
+        self._check_modifications_are_unique(
+            [modification_share.modification for modification_share in modifications_share]
+        )
         return modifications_share
+
+    @staticmethod
+    def _check_modifications_are_unique(modifications: List[ModificationInterface]):
+        """Check if modifications are unique.
+
+        Raises:
+            DfdError: If modifications are not unique.
+
+        """
+        for first_modification, second_modification in itertools.permutations(modifications, 2):
+            if str(first_modification) == str(second_modification):
+                raise DfdError(f"Modifications {first_modification} is not unique")
+        return modifications
 
     @functools.lru_cache(maxsize=1)
     def _get_modifications_range(self, no_frames: int) -> List[ModificationRange]:
