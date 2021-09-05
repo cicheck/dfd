@@ -17,7 +17,7 @@ def _generate_frame_and_filename_pairs(
         yield cv.imread(str(frame_path)), frame_path.name
 
 
-@click.command(name="generate-fakes")
+@click.command(name="find-faces")
 @click.argument("input_path", type=click.Path(exists=True, path_type=pathlib.Path))
 @click.argument("output_path", type=click.Path(exists=False, path_type=pathlib.Path))
 @click.option(
@@ -26,7 +26,7 @@ def _generate_frame_and_filename_pairs(
     type=click.Choice(["hog", "cnn"], case_sensitive=False),
     default="hog",
 )
-def generate_fakes(input_path: pathlib.Path, output_path: pathlib.Path, model_name: str):
+def find_faces(input_path: pathlib.Path, output_path: pathlib.Path, model_name: str):
     face_extractor = FaceExtractor(FaceExtractionModel(model_name))
     no_fakes = sum(1 for _ in input_path.iterdir())
     output_path.mkdir(parents=True, exist_ok=True)
