@@ -2,7 +2,7 @@
 
 import enum
 import math
-from typing import NamedTuple, Tuple
+from typing import NamedTuple, Tuple, Sequence, List, Iterable
 
 import cv2 as cv
 import face_recognition
@@ -62,13 +62,13 @@ class FaceExtractor:
 
         """
         frame_in_rgb = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
-        face_location_tuples = face_recognition.face_locations(
+        face_location_raws = face_recognition.face_locations(
             frame_in_rgb,
             model=self._model_name,
             number_of_times_to_upsample=self._number_of_times_to_upsample,
         )
         face_locations = [
-            FaceLocation.from_tuple(location_tuple) for location_tuple in face_location_tuples
+            FaceLocation.from_tuple(location_tuple) for location_tuple in face_location_raws
         ]
         # If no face was found return original frame
         if not face_locations:
@@ -76,6 +76,36 @@ class FaceExtractor:
         selected_face_location = face_locations[0]
         face = self._select_face(frame, selected_face_location)
         return face
+
+    def extract_batch(self, frames_batch: Sequence[np.ndarray]) -> List[np.ndarray]:
+        """Extract faces from batch of frame.
+
+        Args:
+            frames_batch: batch of OpenCV image. (images in BGR space)
+
+        Returns:
+            Batch of found faces, one per frame, if no face was found original frame is returned.
+
+        """
+        frames_in_rgb = [cv.cvtColor(frame, cv.COLOR_BGR2RGB) for frame in frames_batch]
+        faces_batch: List[np.ndarray] = []
+        face_locations_batch = face_recognition.batch_face_locations(
+            frames_in_rgb,
+            batch_size=len(frames_in_rgb),
+            number_of_times_to_upsample=self._number_of_times_to_upsample,
+        )
+        for frame_index, face_location_raws in enumerate(face_locations_batch):
+            # If no face was found append original frame
+            if not face_location_raws:
+                faces_batch.append(frames_batch[frame_index])
+                continue
+            face_locations = [
+                FaceLocation.from_tuple(location_tuple) for location_tuple in face_location_raws
+            ]
+            selected_face_location = face_locations[0]
+            face = self._select_face(frames_batch[frame_index], selected_face_location)
+            faces_batch.append(face)
+        return faces_batch
 
     def _select_face(
         self,

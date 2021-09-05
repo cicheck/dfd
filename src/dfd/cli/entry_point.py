@@ -3,7 +3,7 @@
 import click
 
 from .frames_extractor import extract_frames
-from .face_finder import find_faces, generate_reals
+from .face_finder import find_faces
 from .predict import predict
 from .test import test
 from .train import train
@@ -16,7 +16,6 @@ def entry_point():
 
 entry_point.add_command(extract_frames)
 entry_point.add_command(find_faces)
-entry_point.add_command(generate_reals)
 entry_point.add_command(train)
 entry_point.add_command(test)
 entry_point.add_command(predict)
