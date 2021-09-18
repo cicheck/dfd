@@ -14,7 +14,7 @@ from dfd.exceptions import DfdError
 
 class FaceExtractionModel(enum.Enum):
     HOG = "hog"
-    cnn = "cnn"
+    CNN = "cnn"
 
 
 class FaceLocation(NamedTuple):
