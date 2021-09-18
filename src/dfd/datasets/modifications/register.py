@@ -6,6 +6,7 @@ from .definitions import (
     CLAHEModification,
     GammaCorrectionModification,
     HistogramEqualizationModification,
+    RedEyesEffectModification,
 )
 from .interfaces import ModificationInterface
 
@@ -31,11 +32,15 @@ class ModificationRegister:
                 CLAHEModification.name(): CLAHEModification,
                 GammaCorrectionModification.name(): GammaCorrectionModification,
                 HistogramEqualizationModification.name(): HistogramEqualizationModification,
+                RedEyesEffectModification.name(): RedEyesEffectModification,
             },
         )
 
     def get_modification_class(self, modification_name: str) -> Type[ModificationInterface]:
         """Get registered modification via name.
+
+        Raises:
+            DfdError when targeted modification is not registered
 
         Returns:
             Type of registered modification.
