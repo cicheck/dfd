@@ -8,9 +8,10 @@ class ModificationInterface(abc.ABC):
     """Modification interface."""
 
     @classmethod
-    @abc.abstractmethod
     def name(cls) -> str:
         """Returns modification name."""
+
+        return cls.__name__
 
     @abc.abstractmethod
     def perform(self, image: np.ndarray) -> np.ndarray:

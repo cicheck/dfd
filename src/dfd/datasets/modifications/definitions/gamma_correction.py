@@ -17,16 +17,6 @@ class GammaCorrectionModification(ModificationInterface):
         """
         self._gamma_value = gamma_value
 
-    @classmethod
-    def name(cls) -> str:
-        """Get name.
-
-        Returns:
-            name of modification
-
-        """
-        return cls.__name__
-
     def perform(self, image: np.ndarray) -> np.ndarray:
         """Perform gamma correction on provided image.
 

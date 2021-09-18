@@ -21,16 +21,6 @@ class CLAHEModification(ModificationInterface):
         self._clip_limit = clip_limit
         self._title_grid_size = (grid_width, grid_height)
 
-    @classmethod
-    def name(cls) -> str:
-        """Get name.
-
-        Returns:
-            name of modification
-
-        """
-        return cls.__name__
-
     def perform(self, image: np.ndarray) -> np.ndarray:
         """Perform CLAHE on image.
 

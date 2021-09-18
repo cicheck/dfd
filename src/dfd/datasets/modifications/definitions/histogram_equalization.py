@@ -9,16 +9,6 @@ from dfd.datasets.modifications.interfaces import ModificationInterface
 class HistogramEqualizationModification(ModificationInterface):
     """Modification Histogram Equalization."""
 
-    @classmethod
-    def name(cls) -> str:
-        """Get name.
-
-        Returns:
-            name of modification
-
-        """
-        return cls.__name__
-
     def perform(self, image: np.ndarray) -> np.ndarray:
         """Perform Histogram Equalization on image.
 
