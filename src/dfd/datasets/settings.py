@@ -18,7 +18,7 @@ class ModificationSettings(pydantic.BaseModel):
 
     name: str
     share: float
-    options: dict
+    options: dict = {}
 
 
 class GeneratorSettings(pydantic.BaseModel):
