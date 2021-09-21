@@ -5,6 +5,7 @@ from ...exceptions import DfdError
 from .definitions import (
     CLAHEModification,
     GammaCorrectionModification,
+    GaussianBlurModification,
     HistogramEqualizationModification,
     RedEyesEffectModification,
 )
@@ -33,6 +34,7 @@ class ModificationRegister:
                 GammaCorrectionModification.name(): GammaCorrectionModification,
                 HistogramEqualizationModification.name(): HistogramEqualizationModification,
                 RedEyesEffectModification.name(): RedEyesEffectModification,
+                GaussianBlurModification.name(): GaussianBlurModification,
             },
         )
 
@@ -40,7 +42,7 @@ class ModificationRegister:
         """Get registered modification via name.
 
         Raises:
-            DfdError when targeted modification is not registered
+            DfdError: when targeted modification is not registered
 
         Returns:
             Type of registered modification.
