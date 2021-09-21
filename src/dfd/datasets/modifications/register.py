@@ -7,6 +7,7 @@ from .definitions import (
     GammaCorrectionModification,
     GaussianBlurModification,
     HistogramEqualizationModification,
+    MedianFilterModification,
     RedEyesEffectModification,
 )
 from .interfaces import ModificationInterface
@@ -35,6 +36,7 @@ class ModificationRegister:
                 HistogramEqualizationModification.name(): HistogramEqualizationModification,
                 RedEyesEffectModification.name(): RedEyesEffectModification,
                 GaussianBlurModification.name(): GaussianBlurModification,
+                MedianFilterModification.name(): MedianFilterModification,
             },
         )
 
