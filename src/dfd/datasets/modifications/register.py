@@ -6,6 +6,7 @@ from .definitions import (
     CLAHEModification,
     GammaCorrectionModification,
     GaussianBlurModification,
+    GaussianNoiseModification,
     HistogramEqualizationModification,
     MedianFilterModification,
     RedEyesEffectModification,
@@ -37,6 +38,7 @@ class ModificationRegister:
                 RedEyesEffectModification.name(): RedEyesEffectModification,
                 GaussianBlurModification.name(): GaussianBlurModification,
                 MedianFilterModification.name(): MedianFilterModification,
+                GaussianNoiseModification.name(): GaussianNoiseModification,
             },
         )
 
