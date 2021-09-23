@@ -30,16 +30,18 @@ class ModificationRegister:
             ModificationRegister with default modifications registered.
         """
 
+        default_modifications = {
+            CLAHEModification,
+            GammaCorrectionModification,
+            HistogramEqualizationModification,
+            RedEyesEffectModification,
+            GaussianBlurModification,
+            MedianFilterModification,
+            GaussianNoiseModification,
+        }
+
         return cls(
-            {
-                CLAHEModification.name(): CLAHEModification,
-                GammaCorrectionModification.name(): GammaCorrectionModification,
-                HistogramEqualizationModification.name(): HistogramEqualizationModification,
-                RedEyesEffectModification.name(): RedEyesEffectModification,
-                GaussianBlurModification.name(): GaussianBlurModification,
-                MedianFilterModification.name(): MedianFilterModification,
-                GaussianNoiseModification.name(): GaussianNoiseModification,
-            },
+            {modification.name(): modification for modification in default_modifications},
         )
 
     def get_modification_class(self, modification_name: str) -> Type[ModificationInterface]:
