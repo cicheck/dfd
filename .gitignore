@@ -1,3 +1,6 @@
+# settings files used locally
+settings
+
 # pyenv file
 .python-version
 
