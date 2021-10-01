@@ -18,6 +18,9 @@ class MedianFilterModification(ModificationInterface):
         """
         self._aperture_size = aperture_size
 
+    def __str__(self) -> str:
+        return "median_filter_{aperture_size}".format(aperture_size=self._aperture_size)
+
     def perform(self, image: np.ndarray) -> np.ndarray:
         """Perform Median filter modification.
 
