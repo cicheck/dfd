@@ -6,7 +6,7 @@ import cv2
 import numpy as np
 from tqdm import tqdm
 
-from .converters import convert_video_to_frames
+from src.dfd.datasets.converters import convert_video_to_frames
 
 
 class CelebDFExtractor:
