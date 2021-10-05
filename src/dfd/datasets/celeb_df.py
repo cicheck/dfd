@@ -8,6 +8,8 @@ from tqdm import tqdm
 
 from src.dfd.datasets.converters import convert_video_to_frames
 
+from .frame_extractor import FrameExtractor
+
 
 class CelebDFExtractor:
     """Extract frames from raw celeb-DF.
@@ -27,7 +29,7 @@ class CelebDFExtractor:
 
     """
 
-    def __init__(self, input_path: Path, output_path: Path):
+    def __init__(self, input_path: Path, output_path: Path, frame_extractor: FrameExtractor):
         """Initialize CelebDFExtractor.
 
         Args:
@@ -35,6 +37,8 @@ class CelebDFExtractor:
             output_path: path to preprocessed Celeb-DF dataset.
 
         """
+        self._frame_extractor = frame_extractor
+
         self._input_path_reals = input_path.joinpath("Celeb-real")
         self._input_path_fakes = input_path.joinpath("Celeb-synthesis")
         self._output_path_reals = output_path.joinpath("reals")
@@ -66,7 +70,7 @@ class CelebDFExtractor:
             upper_bound: upper batch boundary.
 
         """
-        self._extract_batch(
+        self._frame_extractor.extract_batch(
             input_path=self._input_path_reals,
             output_path=self._output_path_reals,
             lower_bound=lower_bound,
@@ -85,7 +89,7 @@ class CelebDFExtractor:
             upper_bound: upper batch boundary.
 
         """
-        self._extract_batch(
+        self._frame_extractor.extract_batch(
             input_path=self._input_path_fakes,
             output_path=self._output_path_fakes,
             lower_bound=lower_bound,
