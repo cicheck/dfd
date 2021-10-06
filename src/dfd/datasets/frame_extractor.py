@@ -22,8 +22,8 @@ class FrameExtractor:
         self,
         input_path: Path,
         output_path: Path,
-        lower_bound: Optional[int],
-        upper_bound: Optional[int],
+        lower_bound: Optional[int] = None,
+        upper_bound: Optional[int] = None,
     ) -> None:
         """Extract frames from batch of videos.
 
