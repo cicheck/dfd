@@ -1,14 +1,12 @@
 """Generate frames dataset that can be directly fed to pipelines."""
-import math
 import pathlib
 from typing import Generator, List, Tuple
 
 import click
 import cv2 as cv
 import numpy as np
-from tqdm import tqdm
 
-from dfd.datasets import extract_faces_one_by_one
+from dfd.datasets import extract_faces_in_batches, extract_faces_one_by_one
 from dfd.datasets.face_extractor import FaceExtractionModel, FaceExtractor
 
 FrameAndNamePair = Tuple[np.ndarray, str]
@@ -80,14 +78,9 @@ def find_faces(
         )
     else:
         click.echo("Processing frames in batches...")
-        no_frames = sum(1 for _ in input_path.iterdir())
-        no_batches = math.ceil(no_frames / batch_size)
-        for batch in tqdm(
-            _generate_frame_and_filename_batches(input_path, batch_size=batch_size),
-            total=no_batches,
-        ):
-            frames_batch, names_batch = zip(*batch)
-            face_batch = face_extractor.extract_batch(frames_batch)
-            for frame_index, face in enumerate(face_batch):
-                face_path = output_path.joinpath(names_batch[frame_index])
-                cv.imwrite(str(face_path), face)
+        extract_faces_in_batches(
+            face_extractor=face_extractor,
+            input_path=input_path,
+            output_path=output_path,
+            batch_size=batch_size,
+        )
