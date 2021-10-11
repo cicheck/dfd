@@ -6,13 +6,14 @@ and exposes simple interface.
 """
 import math
 import pathlib
-from typing import Generator, List, Tuple
+from typing import Generator, List, Optional, Tuple
 
 import cv2 as cv
 import numpy as np
 from tqdm import tqdm
 
 from .face_extractor import FaceExtractor
+from .frame_extractor import FrameExtractor
 
 FrameAndNamePair = Tuple[np.ndarray, str]
 
@@ -77,3 +78,30 @@ def extract_faces_in_batches(
         for frame_index, face in enumerate(face_batch):
             face_path = output_path.joinpath(names_batch[frame_index])
             cv.imwrite(str(face_path), face)
+
+
+def preprocess_fakes(
+    frame_extractor: FrameExtractor,
+    face_extractor: FaceExtractor,
+    input_path: pathlib.Path,
+    storage_path: pathlib.Path,
+    output_path: pathlib.Path,
+    batch_size: Optional[int] = None,
+):
+    frame_extractor.extract_batch(
+        input_path,
+        storage_path,
+    )
+    if not batch_size:
+        extract_faces_one_by_one(
+            face_extractor,
+            input_path=storage_path,
+            output_path=output_path,
+        )
+    else:
+        extract_faces_in_batches(
+            face_extractor,
+            input_path=input_path,
+            output_path=output_path,
+            batch_size=batch_size,
+        )
