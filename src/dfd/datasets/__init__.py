@@ -2,5 +2,10 @@
 
 from .celeb_df import CelebDFExtractor
 from .frame_extractor import FrameExtractor
-from .preprocessor import extract_faces_in_batches, extract_faces_one_by_one, preprocess_fakes
+from .preprocessor import (
+    extract_faces_in_batches,
+    extract_faces_one_by_one,
+    preprocess_fakes,
+    preprocess_reals,
+)
 from .settings import GeneratorSettings

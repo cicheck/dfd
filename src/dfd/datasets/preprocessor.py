@@ -14,6 +14,7 @@ from tqdm import tqdm
 
 from .face_extractor import FaceExtractor
 from .frame_extractor import FrameExtractor
+from .frames_generators import ModificationGenerator
 
 FrameAndNamePair = Tuple[np.ndarray, str]
 
@@ -105,3 +106,28 @@ def preprocess_fakes(
             output_path=output_path,
             batch_size=batch_size,
         )
+
+
+def preprocess_reals(
+    frame_extractor: FrameExtractor,
+    face_extractor: FaceExtractor,
+    modification_generator: ModificationGenerator,
+    input_path: pathlib.Path,
+    storage_path: pathlib.Path,
+    output_path: pathlib.Path,
+):
+    frame_extractor.extract_batch(
+        input_path,
+        storage_path,
+    )
+    no_frames = sum(1 for _ in input_path.iterdir())
+    for modified_frame in tqdm(
+        modification_generator.from_directory(storage_path), total=no_frames, desc="real frames"
+    ):
+        modified_frame_dir = output_path.joinpath(modified_frame.modification_used)
+        modified_frame_dir.mkdir(exist_ok=True)
+        modified_frame_path = modified_frame_dir.joinpath(modified_frame.original_path.name)
+        # Extract faces from modified frames if flag was set
+        frame_to_write = modified_frame.frame
+        frame_to_write = face_extractor.extract(frame_to_write)
+        cv.imwrite(str(modified_frame_path), frame_to_write)
