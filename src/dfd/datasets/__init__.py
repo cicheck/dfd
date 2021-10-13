@@ -7,5 +7,6 @@ from .preprocessor import (
     extract_faces_one_by_one,
     preprocess_fakes,
     preprocess_reals,
+    split,
 )
 from .settings import GeneratorSettings
