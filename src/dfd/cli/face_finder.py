@@ -1,46 +1,10 @@
 """Generate frames dataset that can be directly fed to pipelines."""
 import pathlib
-from typing import Generator, List, Tuple
 
 import click
-import cv2 as cv
-import numpy as np
 
 from dfd.datasets import extract_faces_in_batches, extract_faces_one_by_one
 from dfd.datasets.face_extractor import FaceExtractionModel, FaceExtractor
-
-FrameAndNamePair = Tuple[np.ndarray, str]
-
-
-def _generate_frame_and_filename_pairs(
-    path: pathlib.Path,
-) -> Generator[Tuple[np.ndarray, str], None, None]:
-    for frame_path in path.iterdir():
-        yield cv.imread(str(frame_path)), frame_path.name
-
-
-def _generate_frame_and_filename_batches(
-    path: pathlib.Path,
-    batch_size: int = 64,
-) -> Generator[List[FrameAndNamePair], None, None]:
-    batch: List[FrameAndNamePair] = []
-    for frame_path in path.iterdir():
-        frame_and_name_pair = (cv.imread(str(frame_path)), frame_path.name)
-        # Frame has different shape than previous ones (i.e. is from different video)
-        # TODO: ugly use named tuple instead of [0][0]
-        if len(batch) > 0 and batch[0][0].shape != frame_and_name_pair[0].shape:
-            yield batch
-            batch = [frame_and_name_pair]
-            continue
-
-        batch.append(frame_and_name_pair)
-        # Max batch size achieved
-        if len(batch) == batch_size:
-            yield batch
-            batch = []
-    # Leftovers
-    if len(batch) > 0:
-        yield batch
 
 
 @click.command(name="find-faces")
