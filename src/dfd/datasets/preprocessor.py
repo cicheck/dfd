@@ -209,3 +209,38 @@ def split(
             moved_file_path = output_path / "test" / path_relative_to_input_dir
             moved_file_path.parent.mkdir(exist_ok=True, parents=True)
             file.replace(moved_file_path)
+
+
+def preprocess_single_directory(
+    frame_extractor: FrameExtractor,
+    face_extractor: FaceExtractor,
+    modification_generator: ModificationGenerator,
+    input_path: pathlib.Path,
+    storage_path: pathlib.Path,
+    output_path: pathlib.Path,
+    batch_size: Optional[int] = None,
+) -> None:
+    """Preprocess single directory containing real & fakes videos.
+
+    Assumptions:
+        Directory contains two sub-directories:
+            reals: original videos
+            fakes: synthesized videos
+
+    """
+    preprocess_reals(
+        frame_extractor=frame_extractor,
+        face_extractor=face_extractor,
+        modification_generator=modification_generator,
+        input_path=input_path / "reals",
+        storage_path=storage_path / "reals",
+        output_path=output_path / "reals",
+    )
+    preprocess_fakes(
+        frame_extractor=frame_extractor,
+        face_extractor=face_extractor,
+        input_path=input_path / "fakes",
+        storage_path=storage_path / "fakes",
+        output_path=output_path / "fakes",
+        batch_size=batch_size,
+    )
