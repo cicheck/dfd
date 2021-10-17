@@ -8,6 +8,7 @@ from .preprocessor import (
     preprocess_fakes,
     preprocess_reals,
     preprocess_single_directory,
+    preprocess_whole_dataset,
     split,
 )
 from .settings import GeneratorSettings

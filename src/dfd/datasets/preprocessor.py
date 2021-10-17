@@ -244,3 +244,42 @@ def preprocess_single_directory(
         output_path=output_path / "fakes",
         batch_size=batch_size,
     )
+
+
+def preprocess_whole_dataset(
+    frame_extractor: FrameExtractor,
+    face_extractor: FaceExtractor,
+    modification_generator: ModificationGenerator,
+    input_path: pathlib.Path,
+    storage_path: pathlib.Path,
+    output_path: pathlib.Path,
+    batch_size: Optional[int] = None,
+    train_ds_share: Optional[float] = None,
+    validation_ds_share: Optional[float] = None,
+    test_ds_share: Optional[float] = None,
+) -> None:
+    """Preprocess single directory containing real & fakes videos.
+
+    Assumptions:
+        Directory contains two sub-directories:
+            reals: original videos
+            fakes: synthesized videos
+
+    """
+    split(
+        input_path=input_path,
+        output_path=storage_path / "videos",
+        train_ds_share=train_ds_share,
+        validation_ds_share=validation_ds_share,
+        test_ds_share=test_ds_share,
+    )
+    for dataset in ("train", "validation", "test"):
+        preprocess_single_directory(
+            frame_extractor=frame_extractor,
+            face_extractor=face_extractor,
+            modification_generator=modification_generator,
+            input_path=storage_path / "videos" / dataset,
+            storage_path=storage_path / "frames" / dataset,
+            output_path=output_path / dataset,
+            batch_size=batch_size,
+        )
