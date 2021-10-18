@@ -7,7 +7,7 @@ from dfd.datasets import extract_faces_in_batches, extract_faces_one_by_one
 from dfd.datasets.face_extractor import FaceExtractionModel, FaceExtractor
 
 
-@click.command(name="find-faces")
+@click.command(name="extract-faces")
 @click.option("--in-batches", is_flag=True)
 @click.option(
     "--batch-size",
@@ -24,7 +24,7 @@ from dfd.datasets.face_extractor import FaceExtractionModel, FaceExtractor
     default="hog",
     help="Model to use if frames are processed one by one, if 'in-batches' flag is set cnn is used.",
 )
-def find_faces(
+def extract_faces(
     input_path: pathlib.Path,
     output_path: pathlib.Path,
     model_name: str,

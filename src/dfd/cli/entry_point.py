@@ -2,7 +2,7 @@
 
 import click
 
-from .face_finder import find_faces
+from .face_extractor import extract_faces
 from .frames_extractor import extract_frames
 from .modification_generator import modify_frames
 from .predict import predict
@@ -17,7 +17,7 @@ def entry_point():
 
 
 entry_point.add_command(extract_frames)
-entry_point.add_command(find_faces)
+entry_point.add_command(extract_faces)
 entry_point.add_command(modify_frames)
 entry_point.add_command(predict)
 entry_point.add_command(split)
