@@ -6,7 +6,7 @@ from .face_extractor import extract_faces
 from .frames_extractor import extract_frames
 from .modification_generator import modify_frames
 from .predict import predict
-from .preprocessor import preprocess
+from .preprocess import preprocess
 from .split import split
 from .test import test
 from .train import train
