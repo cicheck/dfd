@@ -5,6 +5,7 @@ import pathlib
 import click
 
 from .dto import PreprocessDTO
+from .extract_faces import extract_faces
 from .extract_frames import extract_frames
 
 
@@ -21,3 +22,4 @@ def preprocess(ctx, input_path: pathlib.Path, output_path: pathlib.Path):
 
 
 preprocess.add_command(extract_frames)
+preprocess.add_command(extract_faces)
