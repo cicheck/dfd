@@ -7,6 +7,7 @@ import click
 from .dto import PreprocessDTO
 from .extract_faces import extract_faces
 from .extract_frames import extract_frames
+from .preprocess_fakes import preprocess_fakes
 
 
 @click.group(name="preprocess")
@@ -23,3 +24,4 @@ def preprocess(ctx, input_path: pathlib.Path, output_path: pathlib.Path):
 
 preprocess.add_command(extract_frames)
 preprocess.add_command(extract_faces)
+preprocess.add_command(preprocess_fakes)
