@@ -29,16 +29,18 @@ def preprocess_reals(
     storage_path: pathlib.Path,
 ):
     # TODO: if not settings path provided use some default settings
-    if not setting_path.is_file():
+    if setting_path and not setting_path.is_file():
         click.echo("Settings path must points to existing file.")
         sys.exit(1)
 
     storage_path.mkdir(parents=True, exist_ok=True)
     frame_extractor = FrameExtractor()
     face_extractor = FaceExtractor(model=FaceExtractionModel.HOG)
-    modification_generator = ModificationGenerator(
-        settings=GeneratorSettings.from_yaml(setting_path)
-    )
+    if setting_path:
+        modification_generator_settings = GeneratorSettings.from_yaml(setting_path)
+    else:
+        modification_generator_settings = GeneratorSettings.default()
+    modification_generator = ModificationGenerator(settings=modification_generator_settings)
     preprocessor.preprocess_reals(
         frame_extractor=frame_extractor,
         face_extractor=face_extractor,

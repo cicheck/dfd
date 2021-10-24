@@ -5,6 +5,9 @@ from typing import List
 import pydantic
 import yaml
 
+# TODO: include model in project
+_FACE_DETECTOR_PATH = "/media/cicheck/Extreme Pro/models/shape_predictor_68_face_landmarks.dat"
+
 
 class ModificationSettings(pydantic.BaseModel):
     """Settings for single modification.
@@ -39,3 +42,48 @@ class GeneratorSettings(pydantic.BaseModel):
         """
         with yaml_filepath.open() as yaml_file:
             return cls(**yaml.safe_load(yaml_file))
+
+    @classmethod
+    def default(cls) -> "GeneratorSettings":
+        """Generate settings using default values.
+
+        Returns:
+            Default settings.
+
+        """
+        return cls(
+            modifications=[
+                ModificationSettings(
+                    name="RedEyesEffectModification",
+                    share="0.125",
+                    options={
+                        "brightness_threshold": 50,
+                        "face_landmarks_detector_path": _FACE_DETECTOR_PATH,
+                    },
+                ),
+                ModificationSettings(
+                    name="CLAHEModification",
+                    share="0.125",
+                    options={
+                        "clip_limit": 2.0,
+                        "grid_width": 8,
+                        "grid_height": 8,
+                    },
+                ),
+                ModificationSettings(
+                    name="HistogramEqualizationModification",
+                    share="0.125",
+                    options={},
+                ),
+                ModificationSettings(
+                    name="GammaCorrectionModification",
+                    share="0.0625",
+                    options={"gamma_value": 0.75},
+                ),
+                ModificationSettings(
+                    name="GammaCorrectionModification",
+                    share="0.0625",
+                    options={"gamma_value": 1.25},
+                ),
+            ]
+        )
