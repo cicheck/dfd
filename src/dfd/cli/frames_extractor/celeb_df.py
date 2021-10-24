@@ -59,6 +59,7 @@ def fakes(input_path: Path, output_path: Path, lower_bound: int, upper_bound: in
     click.echo("Done!")
 
 
+# TODO: should be option, not command
 celebdf.add_command(whole)
 celebdf.add_command(reals)
 celebdf.add_command(fakes)

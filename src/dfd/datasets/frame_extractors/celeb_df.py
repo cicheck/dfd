@@ -4,8 +4,9 @@ from typing import Optional
 
 import cv2
 import numpy as np
+from tqdm import tqdm
 
-from dfd.datasets.converters import convert_video_to_frames
+from .converters import convert_video_to_frames
 
 
 class CelebDFExtractor:
@@ -101,7 +102,7 @@ class CelebDFExtractor:
         """Extract frames from batch of videos.
 
         Split videos into frames and save them into output directory.
-        If boundaries are not specified preprocess all videos from input directory.
+        If boundaries are not specified frames_extractor all videos from input directory.
         Frames are saved in files named by number in which they were produced.
         Starting number is determined by number of files already existing in directory.
 
@@ -114,7 +115,7 @@ class CelebDFExtractor:
         """
         all_input_videos = sorted(input_path.iterdir())
         processed_input_videos = all_input_videos[lower_bound:upper_bound]
-        for video in processed_input_videos:
+        for video in tqdm(processed_input_videos):
             video_frames = convert_video_to_frames(filepath=str(video))
             video_prefix = video.name.split(".")[0]
             for frame_index, frame in enumerate(video_frames):

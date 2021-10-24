@@ -1,11 +1,4 @@
-"""Extract from raw datasets stored on disk frames.
+"""Package used to generate datasets that can be fed into training pipeline."""
 
-Resulting frames datasets contains directories:
-    * reals: frames from real videos
-    * fakes: frames from fake videos
-
-Each frame filename follow schema {video_name}.{frame_index}.{extension}
-
-"""
-
-from .celeb_df import CelebDFExtractor
+from .frame_extractors import CelebDFExtractor
+from .settings import GeneratorSettings
