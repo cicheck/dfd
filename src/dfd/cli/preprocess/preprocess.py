@@ -9,6 +9,7 @@ from .extract_faces import extract_faces
 from .extract_frames import extract_frames
 from .preprocess_fakes import preprocess_fakes
 from .preprocess_reals import preprocess_reals
+from .split import split
 
 
 @click.group(name="preprocess")
@@ -27,3 +28,4 @@ preprocess.add_command(extract_frames)
 preprocess.add_command(extract_faces)
 preprocess.add_command(preprocess_fakes)
 preprocess.add_command(preprocess_reals)
+preprocess.add_command(split)
