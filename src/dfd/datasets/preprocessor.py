@@ -123,12 +123,12 @@ def preprocess_reals(
         input_path,
         storage_path,
     )
-    no_frames = sum(1 for _ in input_path.iterdir())
+    no_frames = sum(1 for path in storage_path.rglob("*") if path.is_file())
     for modified_frame in tqdm(
         modification_generator.from_directory(storage_path), total=no_frames, desc="real frames"
     ):
         modified_frame_dir = output_path.joinpath(modified_frame.modification_used)
-        modified_frame_dir.mkdir(exist_ok=True)
+        modified_frame_dir.mkdir(exist_ok=True, parents=True)
         modified_frame_path = modified_frame_dir.joinpath(modified_frame.original_path.name)
         # Extract faces from modified frames if flag was set
         frame_to_write = modified_frame.frame
@@ -228,6 +228,9 @@ def preprocess_single_directory(
             fakes: synthesized videos
 
     """
+    # Create storage paths
+    storage_path.joinpath("reals").mkdir(parents=True, exist_ok=True)
+    storage_path.joinpath("fakes").mkdir(parents=True, exist_ok=True)
     preprocess_reals(
         frame_extractor=frame_extractor,
         face_extractor=face_extractor,
