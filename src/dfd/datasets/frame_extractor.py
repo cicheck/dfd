@@ -41,7 +41,7 @@ class FrameExtractor:
         """
         all_input_videos = sorted(input_path.iterdir())
         processed_input_videos = all_input_videos[lower_bound:upper_bound]
-        for video in tqdm(processed_input_videos):
+        for video in tqdm(processed_input_videos, desc="extract frames"):
             video_frames = convert_video_to_frames(filepath=str(video))
             video_prefix = video.name.split(".")[0]
             for frame_index, frame in enumerate(video_frames):
