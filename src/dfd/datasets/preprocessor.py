@@ -111,6 +111,25 @@ def preprocess_fakes(
         )
 
 
+def modify_frames(
+    face_extractor: FaceExtractor,
+    modification_generator: ModificationGenerator,
+    input_path: pathlib.Path,
+    output_path: pathlib.Path,
+):
+    no_frames = sum(1 for path in input_path.rglob("*") if path.is_file())
+    for modified_frame in tqdm(
+        modification_generator.from_directory(input_path), total=no_frames, desc="real frames"
+    ):
+        modified_frame_dir = output_path.joinpath(modified_frame.modification_used)
+        modified_frame_dir.mkdir(exist_ok=True, parents=True)
+        modified_frame_path = modified_frame_dir.joinpath(modified_frame.original_path.name)
+        # Extract faces from modified frames if flag was set
+        frame_to_write = modified_frame.frame
+        frame_to_write = face_extractor.extract(frame_to_write)
+        cv.imwrite(str(modified_frame_path), frame_to_write)
+
+
 def preprocess_reals(
     frame_extractor: FrameExtractor,
     face_extractor: FaceExtractor,
@@ -123,17 +142,7 @@ def preprocess_reals(
         input_path,
         storage_path,
     )
-    no_frames = sum(1 for path in storage_path.rglob("*") if path.is_file())
-    for modified_frame in tqdm(
-        modification_generator.from_directory(storage_path), total=no_frames, desc="real frames"
-    ):
-        modified_frame_dir = output_path.joinpath(modified_frame.modification_used)
-        modified_frame_dir.mkdir(exist_ok=True, parents=True)
-        modified_frame_path = modified_frame_dir.joinpath(modified_frame.original_path.name)
-        # Extract faces from modified frames if flag was set
-        frame_to_write = modified_frame.frame
-        frame_to_write = face_extractor.extract(frame_to_write)
-        cv.imwrite(str(modified_frame_path), frame_to_write)
+    modify_frames(face_extractor, modification_generator, storage_path, output_path)
 
 
 def split(
