@@ -47,7 +47,7 @@ class FaceLocation(NamedTuple):
 class FaceExtractor:
     """Extract face from original frame."""
 
-    def __init__(self, model: FaceExtractionModel, number_of_times_to_upsample: int = 2) -> None:
+    def __init__(self, model: FaceExtractionModel, number_of_times_to_upsample: int = 0) -> None:
         self._model_name = model.value
         self._number_of_times_to_upsample = number_of_times_to_upsample
 

@@ -29,8 +29,8 @@ def modify_frames(
     if setting_path and not setting_path.is_file():
         click.echo("Settings path must points to existing file.")
         sys.exit(1)
-
-    face_extractor = FaceExtractor(model=FaceExtractionModel.HOG)
+    # TODO: Use HOG by default
+    face_extractor = FaceExtractor(FaceExtractionModel.CNN, number_of_times_to_upsample=0)
     if setting_path:
         modification_generator_settings = GeneratorSettings.from_yaml(setting_path)
     else:
