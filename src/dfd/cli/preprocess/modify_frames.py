@@ -21,16 +21,27 @@ from .dto import PreprocessDTO, pass_process_dto
         + "on real frames. If no provided default values are used."
     ),
 )
+@click.option(
+    "--model-name",
+    "--model",
+    type=click.Choice(["hog", "cnn"], case_sensitive=False),
+    default="cnn",
+    help=(
+        "Model used to find faces if frames are processed one by one, "
+        + "if 'in-batches' flag is set cnn is used."
+    ),
+)
 @pass_process_dto
 def modify_frames(
     preprocess_dto: PreprocessDTO,
     setting_path: t.Optional[pathlib.Path],
+    model_name: str,
 ):
     if setting_path and not setting_path.is_file():
         click.echo("Settings path must points to existing file.")
         sys.exit(1)
     # TODO: Use HOG by default
-    face_extractor = FaceExtractor(FaceExtractionModel.CNN, number_of_times_to_upsample=0)
+    face_extractor = FaceExtractor(FaceExtractionModel(model_name), number_of_times_to_upsample=0)
     if setting_path:
         modification_generator_settings = GeneratorSettings.from_yaml(setting_path)
     else:

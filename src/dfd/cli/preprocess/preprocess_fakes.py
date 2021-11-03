@@ -32,7 +32,7 @@ def preprocess_fakes(
         face_extractor_model_type = FaceExtractionModel.CNN
     else:
         face_extractor_model_type = FaceExtractionModel.HOG
-    face_extractor = FaceExtractor(model=face_extractor_model_type)
+    face_extractor = FaceExtractor(model=face_extractor_model_type, number_of_times_to_upsample=0)
     preprocessor.preprocess_fakes(
         frame_extractor=frame_extractor,
         face_extractor=face_extractor,

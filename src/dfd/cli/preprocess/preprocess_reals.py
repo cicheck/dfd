@@ -21,11 +21,22 @@ from .dto import PreprocessDTO, pass_process_dto
         + "on real frames. If no provided default values are used."
     ),
 )
+@click.option(
+    "--model-name",
+    "--model",
+    type=click.Choice(["hog", "cnn"], case_sensitive=False),
+    default="cnn",
+    help=(
+        "Model used to find faces if frames are processed one by one, "
+        + "if 'in-batches' flag is set cnn is used."
+    ),
+)
 @click.argument("storage_path", type=click.Path(exists=False, path_type=pathlib.Path))
 @pass_process_dto
 def preprocess_reals(
     preprocess_dto: PreprocessDTO,
     setting_path: t.Optional[pathlib.Path],
+    model_name: str,
     storage_path: pathlib.Path,
 ):
     # TODO: if not settings path provided use some default settings
@@ -35,7 +46,8 @@ def preprocess_reals(
 
     storage_path.mkdir(parents=True, exist_ok=True)
     frame_extractor = FrameExtractor()
-    face_extractor = FaceExtractor(model=FaceExtractionModel.HOG)
+    # TODO: use HOG by default
+    face_extractor = FaceExtractor(FaceExtractionModel(model_name), number_of_times_to_upsample=0)
     if setting_path:
         modification_generator_settings = GeneratorSettings.from_yaml(setting_path)
     else:

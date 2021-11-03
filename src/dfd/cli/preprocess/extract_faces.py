@@ -33,6 +33,7 @@ def extract_faces(
     model_name: str,
     batch_size: int,
 ):
+    # TODO: Use HOG by default
     face_extractor = FaceExtractor(FaceExtractionModel(model_name), number_of_times_to_upsample=0)
     if not in_batches:
         click.echo("Processing frames one by one...")
