@@ -4,7 +4,7 @@ import pytest
 
 from dfd.exceptions import DfdError
 from dfd.models import ModelRegistry
-from tests.stubs.model import ModelStub
+from dfd.models.stubs import ModelStub
 
 REGISTERED_MODELS = MappingProxyType({"stub": ModelStub})
 

@@ -1,3 +1,5 @@
+"""Model stubs."""
+
 import pathlib
 import typing as t
 
