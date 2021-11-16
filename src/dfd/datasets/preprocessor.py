@@ -18,8 +18,11 @@ from dfd.exceptions import DfdError
 from .face_extractor import FaceExtractor
 from .frame_extractor import FrameExtractor
 from .frames_generators import ModificationGenerator
+import structlog
 
 FrameAndNamePair = Tuple[np.ndarray, str]
+
+LOGGER = structlog.get_logger()
 
 
 def _generate_frame_and_filename_pairs(
@@ -35,7 +38,14 @@ def _generate_frame_and_filename_batches(
 ) -> Generator[List[FrameAndNamePair], None, None]:
     batch: List[FrameAndNamePair] = []
     for frame_path in path.iterdir():
-        frame_and_name_pair = (cv.imread(str(frame_path)), frame_path.name)
+        frame = cv.imread(str(frame_path))
+        if not frame:
+            LOGGER.error(
+                "generate_frame_and_filename_batches:error_loading_frame",
+                frame_path=str(frame_path),
+            )
+            raise DfdError("Path {frame_path} does not exist.".format(frame_path=frame_path))
+        frame_and_name_pair = (frame, frame_path.name)
         # Frame has different shape than previous ones (i.e. is from different video)
         # TODO: ugly use named tuple instead of [0][0]
         if len(batch) > 0 and batch[0][0].shape != frame_and_name_pair[0].shape:
