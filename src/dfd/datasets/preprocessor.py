@@ -115,7 +115,7 @@ def preprocess_fakes(
     else:
         extract_faces_in_batches(
             face_extractor,
-            input_path=input_path,
+            input_path=storage_path,
             output_path=output_path,
             batch_size=batch_size,
         )
