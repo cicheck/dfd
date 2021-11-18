@@ -11,6 +11,7 @@ from typing import Generator, List, Optional, Tuple
 
 import cv2 as cv
 import numpy as np
+import structlog
 from tqdm import tqdm
 
 from dfd.exceptions import DfdError
@@ -18,7 +19,6 @@ from dfd.exceptions import DfdError
 from .face_extractor import FaceExtractor
 from .frame_extractor import FrameExtractor
 from .frames_generators import ModificationGenerator
-import structlog
 
 FrameAndNamePair = Tuple[np.ndarray, str]
 
@@ -29,7 +29,14 @@ def _generate_frame_and_filename_pairs(
     path: pathlib.Path,
 ) -> Generator[Tuple[np.ndarray, str], None, None]:
     for frame_path in path.iterdir():
-        yield cv.imread(str(frame_path)), frame_path.name
+        frame = cv.imread(str(frame_path))
+        if frame is None:
+            LOGGER.error(
+                "generate_frame_and_filename_pairs:error_loading_frame",
+                frame_path=str(frame_path),
+            )
+            raise DfdError("Path {frame_path} does not exist.".format(frame_path=frame_path))
+        yield frame, frame_path.name
 
 
 def _generate_frame_and_filename_batches(
@@ -39,7 +46,8 @@ def _generate_frame_and_filename_batches(
     batch: List[FrameAndNamePair] = []
     for frame_path in path.iterdir():
         frame = cv.imread(str(frame_path))
-        if not frame:
+        # OpenCV does not throw exception
+        if frame is None:
             LOGGER.error(
                 "generate_frame_and_filename_batches:error_loading_frame",
                 frame_path=str(frame_path),
@@ -68,6 +76,7 @@ def extract_faces_one_by_one(
     input_path: pathlib.Path,
     output_path: pathlib.Path,
 ):
+    LOGGER.info("extracting_faces_one_by_one", from_path=str(input_path))
     no_frames = sum(1 for _ in input_path.iterdir())
     for frame, file_name in tqdm(_generate_frame_and_filename_pairs(input_path), total=no_frames):
         extracted_face = face_extractor.extract(frame)
@@ -81,6 +90,7 @@ def extract_faces_in_batches(
     output_path: pathlib.Path,
     batch_size: int,
 ):
+    LOGGER.info("extracting_faces_in_batches", from_path=str(input_path))
     no_frames = sum(1 for _ in input_path.iterdir())
     no_batches = math.ceil(no_frames / batch_size)
     for batch in tqdm(
@@ -102,6 +112,12 @@ def preprocess_fakes(
     output_path: pathlib.Path,
     batch_size: Optional[int] = None,
 ):
+    LOGGER.info(
+        "preprocessing_fakes",
+        input_path=str(input_path),
+        storage_path=str(storage_path),
+        output_path=str(output_path),
+    )
     frame_extractor.extract_batch(
         input_path,
         storage_path,
@@ -127,6 +143,11 @@ def modify_frames(
     input_path: pathlib.Path,
     output_path: pathlib.Path,
 ):
+    LOGGER.info(
+        "modifying_frames",
+        input_path=str(input_path),
+        output_path=str(output_path),
+    )
     no_frames = sum(1 for path in input_path.rglob("*") if path.is_file())
     for modified_frame in tqdm(
         modification_generator.from_directory(input_path), total=no_frames, desc="real frames"
@@ -148,6 +169,12 @@ def preprocess_reals(
     storage_path: pathlib.Path,
     output_path: pathlib.Path,
 ):
+    LOGGER.info(
+        "preprocessing_reals",
+        input_path=str(input_path),
+        storage_path=str(storage_path),
+        output_path=str(output_path),
+    )
     frame_extractor.extract_batch(
         input_path,
         storage_path,
@@ -197,6 +224,14 @@ def split(
         )
     if train_ds_share + validation_ds_share + test_ds_share != 1:
         raise DfdError("Dataset shares must adds to one.")
+    LOGGER.info(
+        "splitting_dataset",
+        input_path=str(input_path),
+        output_path=str(output_path),
+        train_share=str(train_ds_share),
+        validation_share=validation_ds_share,
+        test_share=test_ds_share,
+    )
 
     class_directories = [path for path in input_path.iterdir() if path.is_dir()]
     # TODO: loop block to private function
@@ -247,6 +282,12 @@ def preprocess_single_directory(
             fakes: synthesized videos
 
     """
+    LOGGER.info(
+        "preprocessing_directory",
+        input_path=str(input_path),
+        storage_path=str(storage_path),
+        output_path=str(output_path),
+    )
     # Create storage paths
     storage_path.joinpath("reals").mkdir(parents=True, exist_ok=True)
     storage_path.joinpath("fakes").mkdir(parents=True, exist_ok=True)
@@ -288,6 +329,12 @@ def preprocess_whole_dataset(
             fakes: synthesized videos
 
     """
+    LOGGER.info(
+        "preprocessing_dataset",
+        input_path=str(input_path),
+        storage_path=str(storage_path),
+        output_path=str(output_path),
+    )
     split(
         input_path=input_path,
         output_path=storage_path / "videos",
