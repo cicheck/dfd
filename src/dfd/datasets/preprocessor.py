@@ -101,7 +101,16 @@ def extract_faces_in_batches(
         face_batch = face_extractor.extract_batch(frames_batch)
         for frame_index, face in enumerate(face_batch):
             face_path = output_path.joinpath(names_batch[frame_index])
-            cv.imwrite(str(face_path), face)
+            is_frame_saved = cv.imwrite(str(face_path), face)
+            if not is_frame_saved:
+                LOGGER.error(
+                    "extract_faces_in_batches:error_saving_frame",
+                    frame_path=str(face_path),
+                    frame=face,
+                )
+                raise DfdError(
+                    "Cannot save frame under path {frame_path}.".format(frame_path=face_path)
+                )
 
 
 def preprocess_fakes(
@@ -291,6 +300,9 @@ def preprocess_single_directory(
     # Create storage paths
     storage_path.joinpath("reals").mkdir(parents=True, exist_ok=True)
     storage_path.joinpath("fakes").mkdir(parents=True, exist_ok=True)
+    # Create output paths
+    output_path.joinpath("reals").mkdir(parents=True, exist_ok=True)
+    output_path.joinpath("fakes").mkdir(parents=True, exist_ok=True)
     preprocess_reals(
         frame_extractor=frame_extractor,
         face_extractor=face_extractor,
