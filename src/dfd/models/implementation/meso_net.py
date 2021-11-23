@@ -1,7 +1,7 @@
 import pathlib
 import typing as t
 
-from keras import callbacks, models
+from tensorflow.keras import callbacks, models
 from tensorflow import keras, metrics
 from tensorflow.keras import layers, optimizers, preprocessing
 
@@ -49,7 +49,7 @@ class MesoNet(ModelInterface):
 
     """
 
-    def __init__(self, model: t.Optional[keras.Sequential]) -> None:
+    def __init__(self, model: t.Optional[keras.Sequential] = None) -> None:
         self._model: keras.Sequential = model or _build_meso_net_model()
         self._batch_size = 32
         self._metrics = [
@@ -75,9 +75,7 @@ class MesoNet(ModelInterface):
         )
         self._model.compile(optimizer=optimizer, loss="binary_crossentropy", metrics=self._metrics)
 
-    def train(
-        self, train_ds_path: pathlib.Path, validation_ds_path: pathlib.Path
-    ) -> t.Dict[str, float]:
+    def train(self, train_ds_path: pathlib.Path, validation_ds_path: pathlib.Path) -> None:
         # Load datasets
         train_ds = preprocessing.image_dataset_from_directory(
             train_ds_path,
@@ -94,8 +92,8 @@ class MesoNet(ModelInterface):
             class_names=["reals", "fakes"],
         )
         # Calculate reals to fakes ratio
-        no_reals = sum(1 for path in train_ds.joinpath("reals").rglob("*") if path.is_file())
-        no_fakes = sum(1 for path in train_ds.joinpath("fakes").rglob("*") if path.is_file())
+        no_reals = sum(1 for path in train_ds_path.joinpath("reals").rglob("*") if path.is_file())
+        no_fakes = sum(1 for path in train_ds_path.joinpath("fakes").rglob("*") if path.is_file())
         reals_to_fake_ratio = no_reals / no_fakes
         self._model.fit(
             train_ds,
@@ -108,8 +106,6 @@ class MesoNet(ModelInterface):
             epochs=10,
             callbacks=self._callbacks,
         )
-        # TODO: parse history to dict
-        raise NotImplementedError
 
     def test(self, test_ds_path: pathlib.Path) -> t.Dict[str, float]:
         test_ds = preprocessing.image_dataset_from_directory(
@@ -119,9 +115,7 @@ class MesoNet(ModelInterface):
             label_mode="binary",
             class_names=["reals", "fakes"],
         )
-        self._model.evaluate(test_ds, return_dict=True)
-        # TODO: return metrics
-        raise NotImplementedError
+        return self._model.evaluate(test_ds, return_dict=True)
 
     def predict(self, sample_path: pathlib.Path) -> t.Dict[pathlib.Path, Prediction]:
         sample_data = preprocessing.image_dataset_from_directory(
@@ -135,7 +129,8 @@ class MesoNet(ModelInterface):
         raise NotImplementedError
 
     def save(self, path: pathlib.Path):
-        self._model.save(path)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        self._model.save(path.with_suffix(".h5"))
 
     def get_available_metrics_names(self) -> t.List[str]:
         return [metric.name for metric in self._metrics]

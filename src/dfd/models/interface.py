@@ -29,13 +29,8 @@ class ModelInterface(abc.ABC):
     @abc.abstractmethod
     def train(
         self, train_ds_path: pathlib.Path, validation_ds_path: pathlib.Path
-    ) -> t.Dict[str, float]:
-        """Train model using given train and validation data.
-
-        Returns:
-            metrics computed over validation data
-
-        """
+    ) -> None:
+        """Train model using given train and validation data."""
 
     @abc.abstractmethod
     def test(self, test_ds_path: pathlib.Path) -> t.Dict[str, float]:
