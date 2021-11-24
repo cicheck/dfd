@@ -12,7 +12,7 @@ def _build_single_row(*columns, width: int) -> str:
     return row_as_string
 
 
-def echo_metrics(metrics_map: t.Dict[str, float], width: int = 14):
+def echo_metrics(metrics_map: t.Dict[str, float], width: int = 20):
     """Echo given metrics map as markdown table.
 
     Args:
