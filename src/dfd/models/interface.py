@@ -16,6 +16,20 @@ class Prediction(enum.Enum):
     FAKE = enum.auto()
     UNCERTAIN = enum.auto()
 
+    @classmethod
+    def from_confidence(cls, confidence: float, threshold: float = 0.5) -> Prediction:
+        """Translate model confidence into prediction using given threshold.
+
+        Returns:
+            Model prediction over given threshold.
+
+        """
+        if confidence >= threshold:
+            return cls.FAKE
+        if 1 - confidence >= threshold:
+            return cls.REAL
+        return cls.UNCERTAIN
+
 
 class ModelInterface(abc.ABC):
     """Height level wrapper around actual models used underneath.
@@ -27,9 +41,7 @@ class ModelInterface(abc.ABC):
     """
 
     @abc.abstractmethod
-    def train(
-        self, train_ds_path: pathlib.Path, validation_ds_path: pathlib.Path
-    ) -> None:
+    def train(self, train_ds_path: pathlib.Path, validation_ds_path: pathlib.Path) -> None:
         """Train model using given train and validation data."""
 
     @abc.abstractmethod

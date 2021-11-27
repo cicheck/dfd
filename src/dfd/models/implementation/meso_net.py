@@ -1,14 +1,14 @@
 import pathlib
 import typing as t
 
-from tensorflow.keras import callbacks, models
 from tensorflow import keras, metrics
-from tensorflow.keras import layers, optimizers, preprocessing
+from tensorflow.keras import callbacks, layers, models, optimizers, preprocessing
 
 from ..interface import ModelInterface, Prediction
 
 _IMAGE_SIZE: t.Final = (256, 256)
 _MODEL_INPUT_SHAPE: t.Final = (*_IMAGE_SIZE, 3)
+_MODEL_THRESHOLD: t.Final = (*_IMAGE_SIZE, 3)
 
 
 def _build_meso_net_model() -> keras.Sequential:
@@ -124,9 +124,9 @@ class MesoNet(ModelInterface):
             image_size=_IMAGE_SIZE,
             labels=None,
         )
-        self._model.predict(sample_data)
-        # TODO: return actual predictions
-        raise NotImplementedError
+        confidences = self._model.predict(sample_data)
+        predictions = [Prediction.from_confidence(confidence).name for confidence in confidences]
+        return {path: predictions[idx] for idx, path in enumerate(sample_data.file_paths)}
 
     def save(self, path: pathlib.Path):
         path.parent.mkdir(parents=True, exist_ok=True)
