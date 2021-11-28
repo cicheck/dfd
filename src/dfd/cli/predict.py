@@ -1,8 +1,26 @@
 """Perform prediction for single video or frame."""
+import pathlib
+
 import click
+
+from dfd.models import ModelRegistry
 
 
 @click.command()
-def predict():
+@click.option(
+    "--model-name",
+    type=click.Choice(["meso_net"], case_sensitive=False),
+    default="meso_net",
+    help="Name of model used.",
+)
+@click.argument("model_path", type=click.Path(exists=True, path_type=pathlib.Path))
+@click.argument("data_path", type=click.Path(exists=True, path_type=pathlib.Path))
+def predict(model_name: str, model_path: pathlib.Path, data_path: pathlib.Path):
     """Perform prediction for single video or frame."""
-    click.echo("Not implemented yet.")
+    model_class = ModelRegistry.default().get_model_class(model_name)
+    model = model_class.load(model_path)
+    frame_path_to_prediction_map = model.predict(sample_path=data_path)
+    for frame_path, prediction in frame_path_to_prediction_map.items():
+        click.echo(
+            "{frame_name}: {prediction}".format(frame_name=frame_path, prediction=prediction)
+        )

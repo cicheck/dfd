@@ -13,6 +13,7 @@ def entry_point():
     """Entry point for CLI commands."""
 
 
+# TODO: configure logging on app start
 entry_point.add_command(preprocess)
 entry_point.add_command(predict)
 entry_point.add_command(train)
