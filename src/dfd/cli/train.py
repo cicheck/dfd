@@ -33,7 +33,16 @@ def train(
     train_path: pathlib.Path,
     validation_path: pathlib.Path,
 ):
-    """Train model on provided data."""
+    """Train model on provided data.
+
+    Args:
+        model_name: Name of model which will be trained.
+        model_path: Path to model, optional param used to load pre-trained model.
+        output_path: Path that will be used to store trained model.
+        train_path: Path to train dataset.
+        validation_path: Path to validation dataset.
+
+    """
     model_class = ModelRegistry.default().get_model_class(model_name)
 
     if model_path:
