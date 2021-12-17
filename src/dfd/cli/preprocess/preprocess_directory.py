@@ -57,8 +57,6 @@ def preprocess_directory(
         model_name: Name of model used to find faces.
         storage_path: Path that will be used to store frames extracted from videos.
 
-    Returns:
-
     """
     if setting_path and not setting_path.is_file():
         click.echo("Settings path must points to existing file.")
