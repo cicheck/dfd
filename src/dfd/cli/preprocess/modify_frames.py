@@ -37,6 +37,14 @@ def modify_frames(
     setting_path: t.Optional[pathlib.Path],
     model_name: str,
 ):
+    """Modify provided frames using specified settings.
+
+    Args:
+        preprocess_dto: Object containing input and output path, passed via decorator.
+        setting_path: Path to settings used to define modifications used.
+        model_name: Name of model used to find faces.
+
+    """
     if setting_path and not setting_path.is_file():
         click.echo("Settings path must points to existing file.")
         sys.exit(1)

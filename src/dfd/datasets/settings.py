@@ -6,7 +6,7 @@ import pydantic
 import yaml
 
 # TODO: include model in project
-_FACE_DETECTOR_PATH = "/media/cicheck/Extreme Pro/models/shape_predictor_68_face_landmarks.dat"
+from dfd import assets
 
 
 class ModificationSettings(pydantic.BaseModel):
@@ -58,7 +58,7 @@ class GeneratorSettings(pydantic.BaseModel):
                     share="0.125",
                     options={
                         "brightness_threshold": 50,
-                        "face_landmarks_detector_path": _FACE_DETECTOR_PATH,
+                        "face_landmarks_detector_path": str(assets.FACE_LANDMARKS_MODEL_PATH),
                     },
                 ),
                 ModificationSettings(

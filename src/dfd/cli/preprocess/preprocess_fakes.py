@@ -25,6 +25,14 @@ def preprocess_fakes(
     batch_size: t.Optional[int],
     storage_path: pathlib.Path,
 ):
+    """Preprocess directory containing fake videos.
+
+    Args:
+        preprocess_dto: Object containing input and output path, passed via decorator.
+        batch_size: Size of batch that will be used during face finding.
+        storage_path: Path that will be used to store frames extracted from videos.
+
+    """
     storage_path.mkdir(parents=True, exist_ok=True)
     frame_extractor = FrameExtractor()
     # If batch size is set use CNN model

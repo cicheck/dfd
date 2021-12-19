@@ -20,7 +20,14 @@ from .split import split
 @click.argument("output_path", type=click.Path(exists=False, path_type=pathlib.Path))
 @click.pass_context
 def preprocess(ctx, input_path: pathlib.Path, output_path: pathlib.Path):
-    """Preprocess data into form that can be directly fed into pipelines."""
+    """Preprocess data into form that can be directly fed into pipelines.
+
+    Args:
+        ctx: Click context, will be used to store input and output paths.
+        input_path: Input path containing data that will be preprocessed.
+        output_path: Output path where preprocessed data will be saved.
+
+    """
     output_path.mkdir(parents=True, exist_ok=True)
     ctx.obj = PreprocessDTO(
         input_path=input_path,

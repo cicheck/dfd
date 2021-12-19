@@ -18,7 +18,14 @@ from .utils import echo_metrics
 @click.argument("model_path", type=click.Path(exists=True, path_type=pathlib.Path))
 @click.argument("data_path", type=click.Path(exists=True, path_type=pathlib.Path))
 def test(model_name: str, model_path: pathlib.Path, data_path: pathlib.Path):
-    """Test model on provided data."""
+    """Test model on provided data.
+
+    Args:
+        model_name: Name of model which will be trained.
+        model_path: Path to model, optional param used to load pre-trained model.
+        data_path: Path to test dataset.
+
+    """
     model_class = ModelRegistry.default().get_model_class(model_name)
     model = model_class.load(model_path)
     metrics_dict = model.test(test_ds_path=data_path)

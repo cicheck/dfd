@@ -54,6 +54,19 @@ def preprocess_dataset(
     validation_share: t.Optional[float],
     test_share: t.Optional[float],
 ):
+    """Preprocess whole dataset.
+
+    Args:
+        preprocess_dto: Object containing input and output path, passed via decorator.
+        setting_path: Path to settings used to define modifications used.
+        batch_size: Size of batch that will be used during face finding.
+        storage_path: Path that will be used to store frames extracted from videos.
+        model_name: Name of model used to find faces.
+        train_share: Share of training dataset.
+        validation_share: Share of validation dataset.
+        test_share: Share of test dataset.
+
+    """
     if setting_path and not setting_path.is_file():
         click.echo("Settings path must points to existing file.")
         sys.exit(1)

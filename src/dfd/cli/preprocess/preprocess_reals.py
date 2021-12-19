@@ -39,6 +39,15 @@ def preprocess_reals(
     model_name: str,
     storage_path: pathlib.Path,
 ):
+    """Preprocess directory containing real videos.
+
+    Args:
+        preprocess_dto: Object containing input and output path, passed via decorator.
+        setting_path: Path to settings used to define modifications used.
+        model_name: Name of model used to find faces.
+        storage_path: Path that will be used to store frames extracted from videos.
+
+    """
     # TODO: if not settings path provided use some default settings
     if setting_path and not setting_path.is_file():
         click.echo("Settings path must points to existing file.")

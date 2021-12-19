@@ -1,0 +1,116 @@
+@startuml
+package "Business Logic (Core)" #skyblue {
+
+    package Dataset {
+
+        class FrameExtractor {
+            + extract_batch()
+            --
+            Extract frames from video.
+        }
+
+        class FaceExtractor {
+            + extract ()
+            + extract_batch()
+            ~ select_face()
+            --
+            Find face in frame.
+        }
+
+        class ModificationGenerator {
+            + generate ()
+            --
+            Generate modified frames.
+        }
+
+        package Modifications {
+            interface ModificationInterface {
+                + name
+                --
+                + perform()
+            }
+
+            class ModificationRegistry {
+                ~ name_to_modification_type_map
+                --
+                + get_modification_class
+                --
+                Loads concrete modification instances.
+                Port exposed by Business Logic.
+                Modifications are "plugged" here.
+            }
+
+        }
+
+    }
+
+
+    package Model {
+        interface ModelInterface {
+            + train()
+            + test()
+            + predict()
+            + save()
+            + load()
+            + get_available_metrics_names()
+        }
+
+        class ModelRegistry {
+            ~ name_to_model_class_map
+            --
+            + get_model_class()
+            --
+            Loads concrete model instances.
+            Port exposed by Business Logic.
+            Model are "plugged" here.
+        }
+    }
+
+}
+
+
+package "Application" #MistyRose {
+
+    class "MesoNet"  {
+
+    }
+
+    class "CLI"  {
+        + preprocess()
+        + train()
+        + test()
+        + predict()
+        --
+        Purely functional high level interface
+        exposed to application users.
+    }
+
+    package ModificationsDefinitions {
+        class GammaCorrectionModification {
+
+        }
+
+        class CLAHEModification {
+
+        }
+    }
+}
+
+MesoNet -up-- ModelRegistry : register >
+
+MesoNet -up--|> ModelInterface
+
+GammaCorrectionModification -up--|> ModificationInterface
+CLAHEModification -up--|> ModificationInterface
+
+GammaCorrectionModification -up-- ModificationRegistry : register >
+CLAHEModification -up-- ModificationRegistry : register >
+
+ModificationGenerator -up-o ModificationRegistry : load modifications
+
+CLI -up--o FrameExtractor
+CLI -up--o FaceExtractor
+CLI -up--o ModificationGenerator
+CLI -up--o ModelRegistry
+
+@enduml

@@ -48,6 +48,16 @@ def preprocess_directory(
     model_name: str,
     storage_path: pathlib.Path,
 ):
+    """Preprocess directory containing fake and real videos.
+
+    Args:
+        preprocess_dto: Object containing input and output path, passed via decorator.
+        setting_path: Path to settings used to define modifications used.
+        batch_size: Size of batch that will be used during face finding.
+        model_name: Name of model used to find faces.
+        storage_path: Path that will be used to store frames extracted from videos.
+
+    """
     if setting_path and not setting_path.is_file():
         click.echo("Settings path must points to existing file.")
         sys.exit(1)

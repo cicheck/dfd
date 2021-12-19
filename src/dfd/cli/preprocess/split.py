@@ -19,6 +19,15 @@ def split(
     validation_share: t.Optional[float],
     test_share: t.Optional[float],
 ):
+    """Split given dataset into train, validation and test datasets.
+
+    Args:
+        preprocess_dto: Object containing input and output path, passed via decorator.
+        train_share: Share of training dataset.
+        validation_share: Share of validation dataset.
+        test_share: Share of test dataset.
+
+    """
     if train_share is None and validation_share is None and test_share is None:
         train_share, validation_share, test_share = 0.6, 0.2, 0.2
     if train_share is None or validation_share is None or test_share is None:
