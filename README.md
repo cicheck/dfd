@@ -64,15 +64,15 @@ modifications:
   share: 0.125
   options:
     brightness_threshold: 50
-                            - name: CLAHEModification
+  - name: CLAHEModification
   share: 0.125
   options:
     clip_limit: 2.0
     grid_width: 8
     grid_height: 8
-                   - name: HistogramEqualizationModification
+  - name: HistogramEqualizationModification
   share: 0.125
-           - name: GaussianBlurModification
+  - name: GaussianBlurModification
   share: 0.125
   options:
     kernel_width: 9
