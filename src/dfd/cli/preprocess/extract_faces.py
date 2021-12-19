@@ -33,6 +33,15 @@ def extract_faces(
     model_name: str,
     batch_size: int,
 ):
+    """Extract frames from frames contained in given directory.
+
+    Args:
+        preprocess_dto: Object containing input and output path, passed via decorator.
+        in_batches: Boolean flag specifying whether to process frames in batches.
+        model_name: Name of model used to find faces.
+        batch_size: Sie of batch.
+
+    """
     # TODO: Use HOG by default
     face_extractor = FaceExtractor(FaceExtractionModel(model_name), number_of_times_to_upsample=0)
     if not in_batches:

@@ -26,7 +26,7 @@ def extract_frames(
     """Extract frames from videos contained in given directory.
 
     Args:
-        preprocess_dto:
+        preprocess_dto: Object containing input and output path, passed via decorator.
         lower_bound: Inclusive, lower bound of videos batch that will be processed.
         upper_bound: Exclusive, upper bound of videos batch that will be processed.
 
