@@ -23,8 +23,6 @@ def predict(model_name: str, model_path: pathlib.Path, data_path: pathlib.Path):
         model_path: Path to model, optional param used to load pre-trained model.
         data_path: Path to data used for predictions
 
-    Returns:
-
     """
     model_class = ModelRegistry.default().get_model_class(model_name)
     model = model_class.load(model_path)
