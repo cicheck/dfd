@@ -23,6 +23,16 @@ from dfd.datasets import FrameExtractor
 def extract_frames(
     preprocess_dto: PreprocessDTO, lower_bound: t.Optional[int], upper_bound: t.Optional[int]
 ):
+    """Extract frames from videos contained in given directory.
+
+    Args:
+        preprocess_dto:
+        lower_bound: Inclusive, lower bound of videos batch that will be processed.
+        upper_bound: Exclusive, upper bound of videos batch that will be processed.
+
+    Returns:
+
+    """
     frame_extractor = FrameExtractor()
     frame_extractor.extract_batch(
         input_path=preprocess_dto.input_path,
