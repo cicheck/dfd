@@ -1,5 +1,5 @@
-# sphinx
-sphinx
+# sphinx generated files
+sphinx/_build
 
 # settings files used locally
 settings
