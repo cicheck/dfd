@@ -3,10 +3,10 @@
 import cv2 as cv
 import numpy as np
 
-from dfd.datasets.modifications.interfaces import ModificationInterface
+from dfd.datasets.modifications.interfaces import ModificationSpecification
 
 
-class CLAHEModification(ModificationInterface):
+class CLAHEModification(ModificationSpecification):
     """Modification CLAHE (Contrast Limited Adaptive Histogram Equalization)"""
 
     def __init__(self, clip_limit: float, grid_width: int, grid_height: int) -> None:

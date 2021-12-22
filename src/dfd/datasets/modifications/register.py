@@ -11,9 +11,9 @@ from .definitions import (
     MedianFilterModification,
     RedEyesEffectModification,
 )
-from .interfaces import ModificationInterface
+from .interfaces import ModificationSpecification
 
-NameToModificationTypeMap = Dict[str, Type[ModificationInterface]]
+NameToModificationTypeMap = Dict[str, Type[ModificationSpecification]]
 
 
 class ModificationRegister:
@@ -44,7 +44,7 @@ class ModificationRegister:
             {modification.name(): modification for modification in default_modifications},
         )
 
-    def get_modification_class(self, modification_name: str) -> Type[ModificationInterface]:
+    def get_modification_class(self, modification_name: str) -> Type[ModificationSpecification]:
         """Get registered modification via name.
 
         Raises:

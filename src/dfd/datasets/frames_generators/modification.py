@@ -9,7 +9,7 @@ import numpy as np
 
 from dfd.exceptions import DfdError
 from dfd.datasets.modifications.definitions import IdentityModification
-from dfd.datasets.modifications.interfaces import ModificationInterface
+from dfd.datasets.modifications.interfaces import ModificationSpecification
 from dfd.datasets.modifications.register import ModificationRegister
 from dfd.datasets.settings import GeneratorSettings
 
@@ -17,7 +17,7 @@ from dfd.datasets.settings import GeneratorSettings
 class ModificationShare(NamedTuple):
     """Share of frames on which modification will be performed."""
 
-    modification: ModificationInterface
+    modification: ModificationSpecification
     share: float
 
 
@@ -31,7 +31,7 @@ class ModificationRange(NamedTuple):
 
     """
 
-    modification: ModificationInterface
+    modification: ModificationSpecification
     lower_bound: int
     upper_bound: int
 
@@ -117,7 +117,7 @@ class ModificationGenerator:
         return modifications_share
 
     @staticmethod
-    def _check_modifications_are_unique(modifications: List[ModificationInterface]):
+    def _check_modifications_are_unique(modifications: List[ModificationSpecification]):
         """Check if modifications are unique.
 
         Raises:
@@ -160,7 +160,7 @@ class ModificationGenerator:
 
     def _choose_modification(
         self, frame_index: int, input_frame_path: pathlib.Path, no_frames: int
-    ) -> ModificationInterface:
+    ) -> ModificationSpecification:
         frames_permutation = self._get_frames_permutation(no_frames)
         modifications_range = self._get_modifications_range(no_frames)
         permuted_index = frames_permutation[frame_index]

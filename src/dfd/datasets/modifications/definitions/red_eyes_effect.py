@@ -5,7 +5,7 @@ import cv2 as cv
 import dlib
 import numpy as np
 
-from dfd.datasets.modifications.interfaces import ModificationInterface
+from dfd.datasets.modifications.interfaces import ModificationSpecification
 
 
 def _convert_dlib_shape_to_np_array(dlib_shape) -> np.array:
@@ -21,7 +21,7 @@ def _convert_dlib_shape_to_np_array(dlib_shape) -> np.array:
     return np.array([[point.x, point.y] for point in dlib_shape.parts()], dtype="int")
 
 
-class RedEyesEffectModification(ModificationInterface):
+class RedEyesEffectModification(ModificationSpecification):
     """Modification  red-eyes effect."""
 
     def __init__(self, face_landmarks_detector_path: str, brightness_threshold: int = 50) -> None:

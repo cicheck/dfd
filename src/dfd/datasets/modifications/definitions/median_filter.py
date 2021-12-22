@@ -3,10 +3,10 @@
 import cv2 as cv
 import numpy as np
 
-from dfd.datasets.modifications.interfaces import ModificationInterface
+from dfd.datasets.modifications.interfaces import ModificationSpecification
 
 
-class MedianFilterModification(ModificationInterface):
+class MedianFilterModification(ModificationSpecification):
     """Modification Median filter."""
 
     def __init__(self, aperture_size: int) -> None:

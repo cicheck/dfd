@@ -2,10 +2,10 @@
 
 import numpy as np
 
-from dfd.datasets.modifications.interfaces import ModificationInterface
+from dfd.datasets.modifications.interfaces import ModificationSpecification
 
 
-class GaussianNoiseModification(ModificationInterface):
+class GaussianNoiseModification(ModificationSpecification):
     """Modification Gaussian noise."""
 
     def __init__(

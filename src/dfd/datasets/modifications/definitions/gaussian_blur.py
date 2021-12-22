@@ -3,10 +3,10 @@
 import cv2 as cv
 import numpy as np
 
-from dfd.datasets.modifications.interfaces import ModificationInterface
+from dfd.datasets.modifications.interfaces import ModificationSpecification
 
 
-class GaussianBlurModification(ModificationInterface):
+class GaussianBlurModification(ModificationSpecification):
     """Modification Gaussian blur (AKA Gaussian smoothing)."""
 
     def __init__(

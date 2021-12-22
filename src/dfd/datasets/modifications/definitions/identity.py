@@ -1,10 +1,10 @@
 """Modification Identity."""
 import numpy as np
 
-from dfd.datasets.modifications.interfaces import ModificationInterface
+from dfd.datasets.modifications.interfaces import ModificationSpecification
 
 
-class IdentityModification(ModificationInterface):
+class IdentityModification(ModificationSpecification):
     """Modification Identity."""
 
     def perform(self, image: np.ndarray) -> np.ndarray:

@@ -4,7 +4,7 @@ import abc
 import numpy as np
 
 
-class ModificationInterface(abc.ABC):
+class ModificationSpecification(abc.ABC):
     """Modification interface."""
 
     @classmethod

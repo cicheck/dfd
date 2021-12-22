@@ -2,10 +2,10 @@
 import cv2 as cv
 import numpy as np
 
-from dfd.datasets.modifications.interfaces import ModificationInterface
+from dfd.datasets.modifications.interfaces import ModificationSpecification
 
 
-class GammaCorrectionModification(ModificationInterface):
+class GammaCorrectionModification(ModificationSpecification):
     """Modification Gamma Correction."""
 
     def __init__(self, gamma_value: float) -> None:

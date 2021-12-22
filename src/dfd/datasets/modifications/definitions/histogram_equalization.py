@@ -3,10 +3,10 @@
 import cv2 as cv
 import numpy as np
 
-from dfd.datasets.modifications.interfaces import ModificationInterface
+from dfd.datasets.modifications.interfaces import ModificationSpecification
 
 
-class HistogramEqualizationModification(ModificationInterface):
+class HistogramEqualizationModification(ModificationSpecification):
     """Modification Histogram Equalization."""
 
     def perform(self, image: np.ndarray) -> np.ndarray:
