@@ -8,9 +8,13 @@ class ModificationSpecification(abc.ABC):
     """Modification interface."""
 
     @classmethod
-    def name(cls) -> str:
-        """Returns modification name."""
+    def class_name(cls) -> str:
+        """Get class name.
 
+        Returns:
+            Modification class name.
+
+        """
         return cls.__name__
 
     @abc.abstractmethod

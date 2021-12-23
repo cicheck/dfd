@@ -41,7 +41,7 @@ class ModificationRegister:
         }
 
         return cls(
-            {modification.name(): modification for modification in default_modifications},
+            {modification.class_name(): modification for modification in default_modifications},
         )
 
     def get_modification_class(self, modification_name: str) -> Type[ModificationSpecification]:
