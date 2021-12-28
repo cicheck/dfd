@@ -11,7 +11,7 @@ from .definitions import (
     MedianFilterModification,
     RedEyesEffectModification,
 )
-from .interfaces import ModificationSpecification
+from .specification import ModificationSpecification
 
 NameToModificationTypeMap = Dict[str, Type[ModificationSpecification]]
 

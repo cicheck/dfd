@@ -5,7 +5,7 @@ import cv2 as cv
 import dlib
 import numpy as np
 
-from dfd.datasets.modifications.interfaces import ModificationSpecification
+from dfd.datasets.modifications.specification import ModificationSpecification
 
 
 def _convert_dlib_shape_to_np_array(dlib_shape) -> np.array:

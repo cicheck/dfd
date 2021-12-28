@@ -2,7 +2,7 @@
 import cv2 as cv
 import numpy as np
 
-from dfd.datasets.modifications.interfaces import ModificationSpecification
+from dfd.datasets.modifications.specification import ModificationSpecification
 
 
 class GammaCorrectionModification(ModificationSpecification):

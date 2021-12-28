@@ -9,7 +9,7 @@ import numpy as np
 
 from dfd.exceptions import DfdError
 from dfd.datasets.modifications.definitions import IdentityModification
-from dfd.datasets.modifications.interfaces import ModificationSpecification
+from dfd.datasets.modifications.specification import ModificationSpecification
 from dfd.datasets.modifications.register import ModificationRegister
 from dfd.datasets.settings import GeneratorSettings
 
