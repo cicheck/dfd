@@ -30,6 +30,16 @@ class GaussianBlurModification(ModificationSpecification):
         self._sigma_y = sigma_y
 
     def __str__(self) -> str:
+        return self.name
+
+    @property
+    def name(self) -> str:
+        """Get specification name.
+
+        Returns:
+            The name of specification.
+
+        """
         width, height = self._kernel_size
         return f"gaussian_blur{width}_{height}_{self._sigma_x}_{self._sigma_y}"
 

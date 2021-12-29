@@ -17,6 +17,16 @@ class GammaCorrectionModification(ModificationSpecification):
         """
         self._gamma_value = gamma_value
 
+    @property
+    def name(self) -> str:
+        """Get specification name.
+
+        Returns:
+            The name of specification.
+
+        """
+        return f"gamma_correction_{self._gamma_value}"
+
     def perform(self, image: np.ndarray) -> np.ndarray:
         """Perform gamma correction on provided image.
 
@@ -38,4 +48,4 @@ class GammaCorrectionModification(ModificationSpecification):
         return cv.LUT(image, look_up_table)
 
     def __str__(self) -> str:
-        return f"gamma_correction_{self._gamma_value}"
+        return self.name

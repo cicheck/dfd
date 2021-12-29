@@ -37,6 +37,16 @@ class RedEyesEffectModification(ModificationSpecification):
         self._brightness_threshold = brightness_threshold
 
     def __str__(self) -> str:
+        return self.name
+
+    @property
+    def name(self) -> str:
+        """Get specification name.
+
+        Returns:
+            The name of specification.
+
+        """
         return f"red_eyes_effect_{self._brightness_threshold}"
 
     def perform(self, image: np.ndarray) -> np.ndarray:

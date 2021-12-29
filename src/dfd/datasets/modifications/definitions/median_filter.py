@@ -19,6 +19,16 @@ class MedianFilterModification(ModificationSpecification):
         self._aperture_size = aperture_size
 
     def __str__(self) -> str:
+        return self.name
+
+    @property
+    def name(self) -> str:
+        """Get specification name.
+
+        Returns:
+            The name of specification.
+
+        """
         return "median_filter_{aperture_size}".format(aperture_size=self._aperture_size)
 
     def perform(self, image: np.ndarray) -> np.ndarray:

@@ -16,5 +16,15 @@ class IdentityModification(ModificationSpecification):
         """
         return image
 
-    def __str__(self) -> str:
+    @property
+    def name(self) -> str:
+        """Get specification name.
+
+        Returns:
+            The name of specification.
+
+        """
         return "identity"
+
+    def __str__(self) -> str:
+        return self.name

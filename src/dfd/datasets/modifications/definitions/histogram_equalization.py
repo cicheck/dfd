@@ -29,5 +29,15 @@ class HistogramEqualizationModification(ModificationSpecification):
         # Convert back to BGR
         return cv.cvtColor(ycrcb_image, cv.COLOR_YCrCb2BGR)
 
-    def __str__(self) -> str:
+    @property
+    def name(self) -> str:
+        """Get specification name.
+
+        Returns:
+            The name of specification.
+
+        """
         return "histogram_equalization"
+
+    def __str__(self) -> str:
+        return self.name

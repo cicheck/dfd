@@ -21,6 +21,17 @@ class CLAHEModification(ModificationSpecification):
         self._clip_limit = clip_limit
         self._title_grid_size = (grid_width, grid_height)
 
+    @property
+    def name(self) -> str:
+        """Get specification name.
+
+        Returns:
+            The name of specification.
+
+        """
+        width, height = self._title_grid_size
+        return f"clahe_{width}_{height}_{self._clip_limit}"
+
     def perform(self, image: np.ndarray) -> np.ndarray:
         """Perform CLAHE on image.
 
@@ -44,5 +55,4 @@ class CLAHEModification(ModificationSpecification):
         return cv.cvtColor(ycrcb_image, cv.COLOR_YCrCb2BGR)
 
     def __str__(self) -> str:
-        width, height = self._title_grid_size
-        return f"clahe_{width}_{height}_{self._clip_limit}"
+        return self.name

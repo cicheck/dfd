@@ -33,10 +33,20 @@ class ModificationSpecification(abc.ABC):
         """Get class name.
 
         Returns:
-            Modification class name.
+            Specification class name.
 
         """
         return cls.__name__
+
+    @abc.abstractmethod
+    def name(self) -> str:
+        """Get specification name.
+
+        Name should include each modification used in specification.
+
+        Returns:
+            Specification name.
+        """
 
     @abc.abstractmethod
     def perform(self, image: np.ndarray) -> np.ndarray:
@@ -51,13 +61,21 @@ class ModificationSpecification(abc.ABC):
 
 
 class _AndSpecification(ModificationSpecification):
-    """Combine two modification specifications."""
+    """Combine two specifications."""
 
     def __init__(
         self, first_spec: ModificationSpecification, sec_spec: ModificationSpecification
     ) -> None:
         self._first_spec = first_spec
         self._sec_spec = sec_spec
+
+    def name(self) -> str:
+        """Get specification name.
+
+        Returns:
+            Name, combination of names of both specification used to create this one.
+        """
+        return f"{self._first_spec}__{self._sec_spec}"
 
     def perform(self, image: np.ndarray) -> np.ndarray:
         """Apply modifications defined in both specifications.

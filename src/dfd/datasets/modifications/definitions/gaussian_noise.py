@@ -24,6 +24,16 @@ class GaussianNoiseModification(ModificationSpecification):
         self._mean = mean
         self._standard_deviation = standard_deviation
 
+    @property
+    def name(self) -> str:
+        """Get specification name.
+
+        Returns:
+            The name of specification.
+
+        """
+        return f"gaussian_noise{self._mean}_{self._standard_deviation}"
+
     def perform(self, image: np.ndarray) -> np.ndarray:
         """Add Gaussian noise to provided image.
 
