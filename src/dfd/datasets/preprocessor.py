@@ -56,7 +56,7 @@ def _generate_frame_and_filename_batches(
         frame_and_name_pair = (frame, frame_path.name)
         # Frame has different shape than previous ones (i.e. is from different video)
         # TODO: ugly use named tuple instead of [0][0]
-        if len(batch) > 0 and batch[0][0].shape != frame_and_name_pair[0].shape:
+        if len(batch) > 0 and batch[0][0].shape != frame_and_name_pair[0].no_repeats:
             yield batch
             batch = [frame_and_name_pair]
             continue

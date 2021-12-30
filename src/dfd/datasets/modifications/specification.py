@@ -38,6 +38,7 @@ class ModificationSpecification(abc.ABC):
         """
         return cls.__name__
 
+    @property
     @abc.abstractmethod
     def name(self) -> str:
         """Get specification name.
@@ -69,13 +70,14 @@ class _AndSpecification(ModificationSpecification):
         self._first_spec = first_spec
         self._sec_spec = sec_spec
 
+    @property
     def name(self) -> str:
         """Get specification name.
 
         Returns:
             Name, combination of names of both specification used to create this one.
         """
-        return f"{self._first_spec}__{self._sec_spec}"
+        return f"{self._first_spec.name}__{self._sec_spec.name}"
 
     def perform(self, image: np.ndarray) -> np.ndarray:
         """Apply modifications defined in both specifications.
