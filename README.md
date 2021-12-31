@@ -11,6 +11,7 @@ thesis `Testing robustness of DeepFake recognition methods against non-malicious
 * [How it works?](#how-it-works-)
     * [TL;DR:](#tl-dr-)
     * [Tell me more!](#tell-me-more-)
+* [Favourite code snippet](#favourite-code-snippet)
 * [Design](#design)
 * [Installation](#installation)
 * [GPU configuration](#gpu-configuration)
@@ -23,10 +24,9 @@ recognition method used to properly discriminate DeepFake from authentic video w
 ## What is this?
 
 * CLI program allowing to:
-    * Preprocess dataset containing real and fake videos. Chosen part of negatives is modified by selected non-malicious
-      image modifications based on settings assigned by user.
+    * Preprocess dataset containing real and fake videos. Chosen part of negatives is modified by selected modifications based on settings assigned by user.
         * Preprocessing can be done via single command or gradually in steps where single step represents activity such
-          as `extract faces from fake videos.` The letter method allows preprocessing large datasets[^2] on without the
+          as `extract faces from fake videos`. The letter method allows preprocessing large datasets[^2] without the
           need of keeping program on for 24+ hours.
     * Train detection model and evaluate it in assigned settings.
 
@@ -81,6 +81,36 @@ modifications:
 
 The names of supported modifications can be found in [this file](src/dfd/datasets/modifications/register.py).
 
+## Favourite code snippet
+
+```python
+@given(
+    given_specifications=st.lists(
+        st.builds(
+            ModificationStub,
+            name=st.text(min_size=1),
+            no_repeats=st.integers(min_value=1),
+        ),
+        min_size=1,
+        max_size=5,
+    )
+)
+def test_combine_multiple_specifications(given_specifications):
+    # GIVEN
+    image_mock = Mock(spec_set=np.ndarray)
+    # WHEN specifications are combined
+    combined_specification = functools.reduce(operator.and_, given_specifications)
+    # THEN specification names are combined
+    expected_name = "__".join([spec.name for spec in given_specifications])
+    assert combined_specification.name == expected_name
+    # And specifications are performed in order
+    combined_specification.perform(image_mock)
+    expected_calls_in_order = [call.repeat(spec.no_repeats) for spec in given_specifications]
+    image_mock.assert_has_calls(expected_calls_in_order)
+```
+
+It's uses two cool concepts: property-based testing and specification pattern[^4].
+
 ## Design
 
 The application design is loosely inspired
@@ -121,3 +151,4 @@ pip install git+https://github.com/cicheck/dfd.git
 [^1]: Currently the only supported detection method is [Meso-4](https://arxiv.org/abs/1809.00888).
 [^2]: Such as [Celeb-DF](https://github.com/yuezunli/celeb-deepfakeforensics).
 [^3]: Half of negatives modified, 4 modifications used with naive parameters.
+[^4]: Or rather design loosely inspired by specification pattern :stuck_out_tongue:
