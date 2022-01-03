@@ -1,25 +1,19 @@
 ---
 # Example ModificationGenerator settings file
-modifications:
-  - name: RedEyesEffectModification
-    share: 0.125
-    options:
-      brightness_threshold: 50
-      face_landmarks_detector_path: "/media/cicheck/Extreme Pro/\
-        models/shape_predictor_68_face_landmarks.dat"
-  - name: CLAHEModification
-    share: 0.125
-    options:
-      clip_limit: 2.0
-      grid_width: 8
-      grid_height: 8
-  - name: HistogramEqualizationModification
-    share: 0.125
-  - name: GammaCorrectionModification
-    share: 0.0625
-    options:
-      gamma_value: 0.75
-  - name: GammaCorrectionModification
-    share: 0.0625
-    options:
-      gamma_value: 1.25
+modifications_chains:
+  - share: 0.25
+    modifications:
+      - name: GammaCorrectionModification
+        options:
+          gamma_value: 0.75
+      - name: CLAHEModification
+        options:
+          clip_limit: 2.0
+          grid_width: 8
+          grid_height: 8
+  - share: 0.25
+    modifications:
+      - name: GammaCorrectionModification
+        options:
+          gamma_value: 0.75
+      - name: HistogramEqualizationModification

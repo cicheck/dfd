@@ -59,24 +59,23 @@ alter negatives are configured via YAML files. Here is a sample:
 ---
 # Example modifications settings.
 # In total half of negatives are altered.
-modifications:
-  - name: RedEyesEffectModification
-  share: 0.125
-  options:
-    brightness_threshold: 50
-                            - name: CLAHEModification
-  share: 0.125
-  options:
-    clip_limit: 2.0
-    grid_width: 8
-    grid_height: 8
-                   - name: HistogramEqualizationModification
-  share: 0.125
-           - name: GaussianBlurModification
-  share: 0.125
-  options:
-    kernel_width: 9
-    kernel_height: 9
+modifications_chains:
+  - share: 0.25
+    modifications:
+      - name: GammaCorrectionModification
+        options:
+          gamma_value: 0.75
+      - name: CLAHEModification
+        options:
+          clip_limit: 2.0
+          grid_width: 8
+          grid_height: 8
+  - share: 0.25
+    modifications:
+      - name: GammaCorrectionModification
+        options:
+          gamma_value: 0.75
+      - name: HistogramEqualizationModification
 ```
 
 The names of supported modifications can be found in [this file](src/dfd/datasets/modifications/register.py).
