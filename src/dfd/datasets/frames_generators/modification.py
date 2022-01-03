@@ -94,7 +94,7 @@ class ModificationGenerator:
             input_frame = cv.imread(str(input_frame_path))
             modified_frame = modification.perform(input_frame)
             yield ModifiedFrame(
-                modification_used=str(modification),
+                modification_used=modification.name,
                 frame=modified_frame,
                 original_path=input_frame_path,
             )
